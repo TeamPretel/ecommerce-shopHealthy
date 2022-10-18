@@ -9,8 +9,10 @@ const path = require('path')
 const sequelize = new Sequelize('u381026178_eCommerceSalud', 'u381026178_admin', 'Qu&df=#;E2', {
   host: 'sql811.main-hosting.eu',
   dialect: 'mysql',
-      logging: false, // set to console.log to see the raw SQL queries
-      native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+
+  logging: false, 
+  native: false,
+
 }) 
 sequelize.authenticate().then(() => {
   console.log('Nos conectamos a la base de hostinger!!!')
