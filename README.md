@@ -21,6 +21,11 @@ sudo systemctl stop postgresql # Apagar proceso postgres
 sudo systemctl restart postgresql # Reiniciar proceso postgres
 ```
 
+## Listar todos los procesos activos y con puerto asociado:
+```bash
+sudo lsof -i -P -n | grep LISTEN
+```
+
 ## Configurar SSH
 
 Viene de https://code.visualstudio.com/docs/remote/ssh 
@@ -72,11 +77,7 @@ exit
 
 Todo esto vino de https://es.linuxcapable.com/how-to-install-and-configure-postgresql-on-ubuntu-20-04
 
-## Listar todos los procesos activos y con puerto asociado:
 
-```bash
-sudo lsof -i -P -n | grep LISTEN
-```
 ## SSH ... permisos de archivos en carpeta .ssh 
 
 ```bash

@@ -38,10 +38,8 @@ const { Categoria, Marca, Producto } = sequelize.models;
 // Categoria.belongsToMany(Producto, {through: 'producto_categoria'}); 
 
 Marca.hasMany(Producto, {
-  // as: "listadoPorMarca",
   foreignKey: 'marcaId'
 });
-// Producto.belongsTo(Marca, {as: "marcaDeEsteProducto"})
 Producto.belongsTo(Marca)
 
 module.exports = {
