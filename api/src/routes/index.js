@@ -4,9 +4,13 @@ const productosRuta= require('./producto')
 const marcasRuta= require('./marca')
 const path = require('path');
 const { conn } = require('../db');
-// Importar todos los routers;
-// Ejemplo: const authRouter = require('./auth.js');
-
+const cargadores = require('../controlers/cargadores');
+const Marca = require('../models/Marca');
+const {
+  categoriaCarga,
+  marcasCarga,
+  productosCarga
+} = cargadores
 
 const router = Router();
 router.get("/", async (req, res) => {
@@ -14,8 +18,15 @@ router.get("/", async (req, res) => {
 })
 
 router.get("/droptodo", async (req, res) => {
-    conn.dropAllSchemas()
+    await conn.query('SET FOREIGN_KEY_CHECKS = 0')
+    await conn.drop()
+    await conn.sync({force: true})
+    await conn.query('SET FOREIGN_KEY_CHECKS = 1')
     res.status(418).json({mensaje: 'Volaste todo a la miercoles!'})
+    categoriaCarga()
+    marcasCarga()
+    productosCarga()
+    console.log('Todos los esquemas dropeados y recargados!')
 })
 
 // Configurar los routers

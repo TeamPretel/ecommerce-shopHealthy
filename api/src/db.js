@@ -36,13 +36,16 @@ let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].s
 sequelize.models = Object.fromEntries(capsEntries);
 
 const { Categoria, Marca, Producto } = sequelize.models;
-// Producto.belongsToMany(Categoria, {through: 'producto_categoria'});
-// Categoria.belongsToMany(Producto, {through: 'producto_categoria'}); 
-
+Producto.belongsToMany(Categoria, {through: 'productosPorCategoria', timestamps: false})
+Categoria.belongsToMany(Producto, {through: 'productosPorCategoria', timestamps: false})
+Producto.belongsTo(Marca)
 Marca.hasMany(Producto, {
   foreignKey: 'marcaId'
 });
+<<<<<<< Updated upstream
 Producto.belongsTo(Marca)
+=======
+>>>>>>> Stashed changes
 
 module.exports = {
   ...sequelize.models,

@@ -3,10 +3,30 @@ const { Router } = require("express");
 const axios = require("axios");
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
-const { Categoria } = require("../db");
+const { Categoria, Producto, Marca } = require("../db");
 // const {API_KEY} = process.env;
 
 const router = Router();
+
+router.get("/:categoria", async (req, res) => {
+  const { categoria } = req.params
+  console.log(categoria)
+  const InstanciaCategoria = await Categoria.findOne({
+    where: {
+      nombre: categoria
+    }
+  })  
+  console.log(JSON.stringify(InstanciaCategoria))
+
+  Categoria.findAll({
+    include: { 
+      model: Producto,
+      attributes: ['nombre']
+    }
+  }).then((prods) => {res.json(prods)})
+  
+})
+
 router.get("/", async (req, res) => {
   try {
     const categorias = await Categoria.findAll({

@@ -9,13 +9,11 @@ const productos = require('../data/productos')
 //     where: { name: paises}
 // })
 // newActivity.addCountry(countries)
-
+  
 async function categoriaCarga() {
     try {
       categoria.forEach(category => {
-        Categoria.findOrCreate({
-          where: { nombre: category.nombre }
-        })
+        Categoria.create(category)
       })
     }
     catch (error) {
@@ -36,17 +34,16 @@ try {
   
 async function productosCarga() {
 productos.forEach(async c => {
-    const { nombre, precio, descripcion, img, stock, marcaId } = c
-    const producto = await Producto.create({ nombre, precio, descripcion, img, stock, marcaId })
-    // console.log(JSON.stringify(producto))
-    
-    // estaMarca.belongsTo(productoLoco.idMarca)
-    // where: { nombre: c.nombre },
-    // defaults: { precio: c.precio, descripcion: c.descripcion, img: "https://dkndrd.com/" + + c.img, stock: c.stock }
-    // c.idCategoria.split(',').forEach(eCategoria =>{
-    //     producto.addCategoria(eCategoria, {through: 'producto_categoria'} )
-    // })
-    // console.log(`Este es el marcaIDDD, ${JSON.stringify(c)}`)
+    const { nombre, precio, descripcion, img, stock, marcaId, idCategoria } = c
+    console.log(idCategoria)
+    const nuevoProducto = await Producto.create({ nombre, precio, descripcion, img, stock, marcaId })
+    await Promise.all(
+      c.idCategoria.split(',').map(async (uwu) => {
+        const unaCategoria = await Categoria.findByPk(uwu)
+        console.log(idCategoria)
+        nuevoProducto.addCategoria(unaCategoria)
+      })
+    )
     // const estaMarca =  await Marca.findByPk(parseInt(idMarca))
 })
 }

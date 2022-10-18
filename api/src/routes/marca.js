@@ -1,10 +1,5 @@
 const { Router } = require("express");
-//Instalo e importo axios//
-const axios = require("axios");
-// Importar todos los routers;
-// Ejemplo: const authRouter = require('./auth.js');
 const { Marca } = require("../db");
-// const {API_KEY} = process.env;
 
 const router = Router();
 router.get("/", async (req, res) => {
