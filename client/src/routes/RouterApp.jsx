@@ -1,5 +1,6 @@
-import { Route, Routes } from "react-router-dom";
-import { NavBar } from "../components/NavBar";
+/* eslint-disable react/react-in-jsx-scope */
+import { Route, Routes } from 'react-router-dom'
+import { NavBar } from '../components/NavBar'
 import {
   Admin,
   Contact,
@@ -9,8 +10,8 @@ import {
   ProductDetail,
   Register,
   Shopping,
-  User,
-} from "../pages/index";
+  User
+} from '../pages'
 
 export const RouterApp = () => {
   return (
@@ -28,7 +29,7 @@ export const RouterApp = () => {
         <Route path="/admin" element={<Admin />} />
       </Routes>
     </>
-  );
-};
+  )
+}
 
-//home || detalles de producto|| carrito de compras || login || registro||contacto|| panel de usuario || panel de administrador ||
+// home || detalles de producto|| carrito de compras || login || registro||contacto|| panel de usuario || panel de administrador ||

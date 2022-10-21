@@ -1,49 +1,49 @@
 
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import { useState } from 'react';
-import logo from '../assets/logo.png';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Link as RouterLink, Navigate} from 'react-router-dom';
-import { FilterAcordion} from './FilterAcordion';
-import { FilterSelect } from './FilterSelect';
-import { useDispatch, useSelector } from 'react-redux';
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import Menu from '@mui/material/Menu'
+import MenuIcon from '@mui/icons-material/Menu'
+import Container from '@mui/material/Container'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import Tooltip from '@mui/material/Tooltip'
+import MenuItem from '@mui/material/MenuItem'
+import { useState } from 'react'
+import logo from '../assets/logo.png'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import { Link as RouterLink, Navigate} from 'react-router-dom'
+import { FilterAcordion} from './FilterAcordion'
+import { FilterSelect } from './FilterSelect'
+import { useDispatch, useSelector } from 'react-redux'
 
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
 export const NavBar = () => {
-  const [anchorElNav, setAnchorElNav] = useState (null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [anchorElNav, setAnchorElNav] = useState (null)
+  const [anchorElUser, setAnchorElUser] = useState(null)
 
   const dispatch = useDispatch()
   
   const {categName} = useSelector(state=> state.catalogReducer)
 
   const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
+    setAnchorElNav(event.currentTarget)
+  }
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+    setAnchorElUser(event.currentTarget)
+  }
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+    setAnchorElNav(null)
+  }
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+    setAnchorElUser(null)
+  }
 
   return (
     <AppBar position="fixed">
@@ -199,5 +199,5 @@ export const NavBar = () => {
         </Toolbar>
       </Container>
     </AppBar>
-  );
-};
+  )
+}

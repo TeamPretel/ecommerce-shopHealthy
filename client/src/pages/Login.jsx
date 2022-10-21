@@ -1,6 +1,7 @@
+/* eslint-disable camelcase */
 import { Login_comp } from '../components/Login'
 import React from 'react'
-import Container from '@mui/material/Container';
+import Container from '@mui/material/Container'
 
 export const Login = () => {
   return (
