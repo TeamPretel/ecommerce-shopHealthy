@@ -16,7 +16,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../components/Auth'
 import { Input } from '../components/Input'
-import { useRouter } from '../../Hooks/useRouter'
+import { useRouter } from '../Hooks/useRouter'
 
 
 function Copyright(props) {

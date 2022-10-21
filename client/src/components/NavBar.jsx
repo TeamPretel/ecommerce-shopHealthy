@@ -20,13 +20,15 @@ import { FilterSelect } from './FilterSelect'
 import { useDispatch, useSelector } from 'react-redux'
 
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
+const notLoging = ['login'];
+const logged = ['mi perfil', 'mis compras', 'lista de deseos','logout']
 
 export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState (null)
   const [anchorElUser, setAnchorElUser] = useState(null)
 
   const dispatch = useDispatch()
+  const [isLoged, setIsLoged] = useState(true)
   
   const {categName} = useSelector(state=> state.catalogReducer)
 
@@ -189,9 +191,27 @@ export const NavBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {
+                isLoged
+                  ? 
+                  <MenuItem key='loginItem' onClick={handleCloseUserMenu}>
+                      <Typography 
+                      textAlign="center"
+                      component={RouterLink}
+                    sx={{textDecoration:'none', color:'inherit', fontSize:'0.875rem'}}
+
+                      to='/login'
+                      >Login</Typography>
+                  </MenuItem>
+                  :
+              logged.map(el => (
+                <MenuItem key={el} onClick={handleCloseUserMenu}>
+                  <Typography 
+                    textAlign="center"
+                    component={RouterLink}
+                    sx={{textDecoration:'none', color:'inherit', fontSize:'0.875rem'}}
+                    to={`/${el}`}
+                    >{el}</Typography>
                 </MenuItem>
               ))}
             </Menu>
