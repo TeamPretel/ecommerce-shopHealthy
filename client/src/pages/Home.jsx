@@ -1,25 +1,32 @@
 import { ListImages } from '../components/ListImages'
 import { Box, CardMedia, Container, Grid } from '@mui/material';
 import Pagination from '@mui/material/Pagination';
-import {usePagination} from "../Hooks/usePagination";
-import Banner from '../assets/banner.jpg'
+import {usePagination} from "../hooks/usePagination";
+import Banner from '../assets/banner.png'
 import { useState, useEffect } from 'react';
 import {useDispatch, useSelector,} from 'react-redux'
 import { initProducts } from '../actions/getInitProducts';
+import { ShoppingCartBadge } from '../components/ShoppingCardBadge';
+import { ActionAlerts } from '../components/AlertCategoria';
 
 export const Home = () => {
 
-  const {allProducts} = useSelector(state=>{console.log(state); return state.catalogReducer})
+  const {products, allProducts, categ, setBanner} = useSelector(state=> state.catalogReducer)
   const dispatch = useDispatch();
-
+  let dataToShow = [];
   let [page, setPage] = useState(1);
   const PER_PAGE = 9;
+
   useEffect(() => {
     dispatch(initProducts())
   }, [dispatch]);
 
-  const count = Math.ceil(allProducts.length / PER_PAGE);
-  const _DATA = usePagination(allProducts, PER_PAGE);
+
+  if(categ === 'All') dataToShow= allProducts;
+  else dataToShow = products
+
+  const count = Math.ceil(dataToShow.length / PER_PAGE);
+  const _DATA = usePagination(dataToShow, PER_PAGE);
 
   const handleChange = (e, p) => {
     setPage(p);
@@ -27,13 +34,14 @@ export const Home = () => {
   };
   return (
     <Container sx={{marginTop:'30px'}} >
-        <Box sx={{margin:'90px 0 25px', marginRight:4}}>
+        {setBanner? <Box sx={{margin:'90px 0 25px', marginRight:4}}>
           <CardMedia
             component="img"
             image={Banner}
-            alt="Paella dish"
+            alt="Portada"
+            height='400'
           />
-        </Box>
+        </Box> : <ActionAlerts categoria={categ}/>}
         <ListImages data={_DATA}/>
         <Grid container sx={{width:'98%',justifyContent:'center', margin:'30px 0'}}>
           <Pagination
@@ -45,6 +53,7 @@ export const Home = () => {
           shape="rounded"
           onChange={handleChange}
         />
+        {/* <ShoppingCartBadge position='fixed'/> */}
         </Grid>
     </Container>
   )

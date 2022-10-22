@@ -14,16 +14,21 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import logo from '../assets/logo.png';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Link as RouterLink} from 'react-router-dom';
+import { Link as RouterLink, Navigate} from 'react-router-dom';
 import { FilterAcordion} from './FilterAcordion';
 import { FilterSelect } from './FilterSelect';
+import { useDispatch, useSelector } from 'react-redux';
 
-const pages = ['Catálogo', 'Comprar', 'Contacto'];
+
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState (null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+
+  const dispatch = useDispatch()
+  
+  const {categName} = useSelector(state=> state.catalogReducer)
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -101,9 +106,11 @@ export const NavBar = () => {
                     component={RouterLink}
                     sx={{textDecoration:'none', color:'inherit'}}
                     to='catalogo'
+                    onClick={()=>dispatch({type: 'RESET_CATEG_NAME'})}
+                    replace={true}
                     >Catálogo</Typography>
                 </MenuItem>
-
+                
                 <FilterAcordion/>   
 
                 <MenuItem onClick={handleCloseNavMenu}>
@@ -140,16 +147,16 @@ export const NavBar = () => {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             
               <Button
-                onClick={handleCloseNavMenu}
+                onClick={()=>dispatch({type: 'RESET_CATEG_NAME'})}
                 sx={{ my: 2, color: 'white', display: 'block' }}
                 component={RouterLink}
                 to='catalogo'
               >
                 Catálogo
               </Button>
-              <FilterSelect categTitle='MERCADO NATURAL' />
-              <FilterSelect categTitle='BEBIDAS E INFUSIONES'/>
-              <FilterSelect categTitle='COSMETICA Y PERFUMERIA'/>
+
+              {categName.map((el, i)=> <FilterSelect key={i} categTitle={el} />) }
+              
               <Button
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}

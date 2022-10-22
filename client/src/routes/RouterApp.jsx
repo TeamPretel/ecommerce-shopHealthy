@@ -6,7 +6,7 @@ import {
   Home,
   LandingPage,
   Login,
-  ProductDetails,
+  ProductDetail,
   Register,
   Shopping,
   User,
@@ -19,7 +19,7 @@ export const RouterApp = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/catalogo" element={<Home />} />
-        <Route path="/catalogo/:id" element={<ProductDetails />} />
+        <Route path="/catalogo/:id" element={<ProductDetail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Register />} />
         <Route path="/comprar" element={<Shopping />} />

@@ -71,7 +71,7 @@ export const Login_comp = () => {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Email"
               name="email"
               autoComplete="email"
               autoFocus
@@ -106,12 +106,12 @@ export const Login_comp = () => {
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
-                  Forgot password?
+                  Olvidaste el password?
                 </Link>
               </Grid>
               <Grid item>
                 <Link component={RouterLink} to="/registro" variant="body2">
-                  {"Don't have an account? Register"}
+                  {"No tenes cuenta? Registrate"}
                 </Link>
               </Grid>
             </Grid>

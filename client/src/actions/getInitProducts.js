@@ -8,7 +8,7 @@ export const initProducts = ()=>{
             const allProducts = await getAllProducts();
             dispath({
                 type: 'SUCCESS_FETCH_INIT_PRODUCTS',
-                payload: allProducts,
+                payload: {data: allProducts, cat: 'All'},
             })
         } catch (error) {
             dispath({
