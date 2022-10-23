@@ -45,13 +45,6 @@ Producto.belongsTo(Marca)
 Marca.hasMany(Producto, {
   foreignKey: 'marcaId'
 });
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-Producto.belongsTo(Marca)
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> main
 
 module.exports = {
   ...sequelize.models,
