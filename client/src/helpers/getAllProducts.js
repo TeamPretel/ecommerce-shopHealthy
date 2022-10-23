@@ -1,4 +1,4 @@
 export const getAllProducts = async()=>{
-    const allProducts = await (await fetch('http://31.220.49.30:3001/productos')).json();
+    const allProducts = await (await fetch('https://back.dkndrd.com/tresmiluno/productos')).json();
     return allProducts;
 }
