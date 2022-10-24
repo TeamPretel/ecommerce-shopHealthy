@@ -14,7 +14,7 @@ router.get("/usuarios", async (req, res) => {
       res.status(400).send(error);
     }
   });
-
+  //        /tresmiluno/usuario/consulta
   router.post('/consulta', async (req,res)=>{
     console.log(req.body)
 const {nombre, apellido, email, telefono, mensaje}=req.body;
@@ -37,17 +37,14 @@ const {nombre, apellido, email, telefono, mensaje}=req.body;
         to: 'healthyshophenry@outlook.com',     
         subject: `Consulta de ${email}`,
        
-       html: (`<p>
-       Nombre:${nombre}<br> 
-       Apellido:${apellido}<br> 
-       Email:${email}<br> 
-       Telefono:${telefono}<br> 
-       Mensaje:${mensaje}</p>`)
+       html: (`<p>       
+       Email: ${email}<br>
+       Mensaje: ${mensaje}</p>`)
     })
 
     console.log('Message sent', info.messageId)
 
-    res.send('received papaá!!!!')
+    res.send('Mensaje Registrado!')
 })
 
 

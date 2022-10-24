@@ -35,7 +35,7 @@ try {
 async function productosCarga() {
 productos.forEach(async c => {
     const { nombre, precio, descripcion, img, stock, marcaId, idCategoria } = c
-    console.log(idCategoria)
+    //console.log(idCategoria)
     const nuevoProducto = await Producto.create({ nombre, precio, descripcion, img, stock, marcaId })
     await Promise.all(
       c.idCategoria.split(',').map(async (uwu) => {

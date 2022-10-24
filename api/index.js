@@ -2,6 +2,7 @@ const { Sequelize } = require('sequelize');
 const server = require('./src/app.js');
 
 
+
 const { conn } = require('./src/db');
 
 // Syncing all the models at once.

@@ -7,7 +7,7 @@ const path = require('path')
 const {
   DB_USER, DB_PASSWORD, DB_HOST
 } = process.env;
-const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/PGripal`, {
+const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/pGrupal`, {
         logging: false,
         native: false,
       });

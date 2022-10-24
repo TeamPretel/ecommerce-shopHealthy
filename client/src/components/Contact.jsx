@@ -9,8 +9,14 @@ import MarkunreadMailboxIcon from "@mui/icons-material/MarkunreadMailbox";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
+import { postContactoMensaje } from '../actions/contactoMail'
+import { useDispatch } from 'react-redux';
+
 
 export const Contact_comp = () => {
+
+  const dispatch = useDispatch()
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -18,6 +24,14 @@ export const Contact_comp = () => {
       email: data.get("email"),
       comment: data.get("comment"),
     });
+
+    const info = {
+      email: data.get("email"),
+      mensaje: data.get("comment"),
+    }
+
+    dispatch(postContactoMensaje(info))
+    
   };
 
   return (
