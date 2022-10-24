@@ -7,7 +7,6 @@ const axios = require("axios");
 const { Producto, Marca, Categoria } = require("../db");
 // const {API_KEY} = process.env;
 
-//FALTA CONFIGURAR LA MODULARIZACION....
 const router = Router();
 
 
@@ -34,8 +33,8 @@ router.get("/marca", async (req, res) => {
 
 
 router.get("/", async (req, res) => {
+  /*
   const {nombre,marca } = req.query
-
   let todosLosProductos = await Producto.findAll()
   if (nombre) {
     let productoFiltrado = todosLosProductos.filter( prod => prod.nombre.toLowerCase().includes(nombre.toLowerCase()))
@@ -50,7 +49,8 @@ router.get("/", async (req, res) => {
       }, 
     }).then(prods => res.json(prods))
   }
-
+*/
+  res.json(getProductos())
 })
 
 /* 
@@ -113,6 +113,116 @@ router.get("/categoria", async (res, req) => {
     res.status(404).send(error)
   }
 });
+
+
+
+//Crear categoria
+router.post("/categoria/crear", async (req, res) => {
+  try {
+    const { nombre } = req.body;
+    const categoria = await Categoria.create({
+      nombre: nombre,
+    });
+    res.status(200).send(categoria);
+  } catch (error) {
+    res.status(404).send(error);
+  }
+});
+
+//* PUT  Corrección de categorías
+router.put("/categoria/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const producto = await Categoria.findByPk(id);
+    const { nombre } = req.body;
+    if (nombre) {
+      producto.nombre = nombre;
+      producto.save();
+    }
+    res.status(200).send({ msg: "cambios guardados!" });
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+//? POST crear PRODUCTO
+
+
+
+router.post("/admin/crear", async (req, res) => {
+  const categoriasAux = await Categoria.findAll({
+    include: [{ model: Producto }],
+  });
+
+  try {
+    const { nombre, descripcion, precio, stock, imagen, categorias } = req.body;
+    const producto = await Producto.create({
+      nombre: nombre,
+      descripcion: descripcion,
+      precio: precio,
+      stock: stock,
+      imagen: imagen,
+    });
+
+    let auxiliar = [];
+
+    categoriasAux?.forEach((elemento) => {
+      const filtroId = categorias.filter((c) => c.nombre === elemento);
+      auxiliar.push(filtroId[0].id);
+    });
+
+    auxiliar?.map((id) => {
+      Categoria.findByPk(id).then((esaCategoria) => {
+        Producto.findByPk(producto.id) //aca va el id del producto creado
+          .then((productoNuevo) => {
+            esaCategoria.addProducto(productoNuevo);
+          })
+          .catch((error) => {
+            return res.status(400).json(error);
+          });
+      });
+    });
+    res.status(200).send(producto);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+//* PUT Producto
+
+router.put("/admin/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const producto = await Producto.findByPk(id);
+    const { nombre, precio, descripcion, imagen, stock } = req.body;
+
+    if (nombre) {
+      producto.nombre = nombre;
+      producto.save();
+    }
+    if (precio) {
+      producto.precio = precio;
+      producto.save();
+    }
+    if (descripcion) {
+      producto.descripcion = descripcion;
+      producto.save();
+    }
+    if (imagen) {
+      producto.imagen = imagen;
+      producto.save();
+    }
+    if (stock) {
+      producto.stock = stock;
+      producto.save();
+    }
+
+    res.status(200).send(id);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+
 
 //GET DETAILS :ID
 router.get("/:id", async (req, res) => {

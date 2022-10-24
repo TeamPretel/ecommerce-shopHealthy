@@ -14,6 +14,9 @@ server.use(cookieParser());
 server.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
 server.use((req, res, next) => {
 
+
+
+
   res.header('Access-Control-Allow-Origin', '*'); 
   res.header('Access-Control-Allow-Credentials', 'true'); 
 

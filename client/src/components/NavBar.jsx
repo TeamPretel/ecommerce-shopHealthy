@@ -1,4 +1,3 @@
-
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,10 +13,22 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import logo from '../assets/logo.png';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Link as RouterLink, useNavigate} from 'react-router-dom';
+
+//import { Link as RouterLink, useNavigate} from 'react-router-dom';
+//import { FilterAcordion} from './FilterAcordion';
+//import { FilterSelect } from './FilterSelect';
+//import { useDispatch, useSelector } from 'react-redux';
+
+import firebaseApp from '../credenciales'
+import {getAuth, signOut} from 'firebase/auth'
+const auth= getAuth(firebaseApp)
+console.dir(auth)
+
+import { Link as RouterLink, Navigate, useNavigate} from 'react-router-dom';
 import { FilterAcordion} from './FilterAcordion';
 import { FilterSelect } from './FilterSelect';
 import { useDispatch, useSelector } from 'react-redux';
+
 import HandleLogout from '../helpers/HandleLogOut'
 import { useContext } from "react";
 import { AuthContext } from "../auth/AuthContext";
@@ -26,19 +37,61 @@ import firebaseApp from '../credenciales'
 import {getAuth, signOut} from 'firebase/auth'
 const auth= getAuth(firebaseApp)
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import { Checkbox, Grid } from '@mui/material';
+import { Filters } from './Filters';
+import { SearchBar } from './Search';
+
+
+const logged = [
+  {
+    label: 'Mi perfil',
+    link: '/usuario/nombre'
+  },
+  {
+    label: 'Lista de deseos',
+    link: '/usuario/nombre/lista-de-deseos'
+  },{
+    label: 'Compras',
+    link: '/usuario/nombre/compras'
+  },
+]
+
+const admin =[
+  {
+    label: 'Mi perfil',
+    link: '/admin/nombre'
+  },
+  {
+    label: 'Lista de deseos',
+    link: '/admin/nombre/lista-de-deseos'
+  },
+  {
+    label: 'Dashboard',
+    link: '/admin/nombre/dashboard'
+  },
+  {
+    label: 'Administracion de productos',
+    link: '/admin/nombre/administracion'
+  },
+]
+
 
 export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+
   const [logeado, setLogeado] = useState(false)
   const {user} = useContext(AuthContext)
   const navigate = useNavigate();
 
 
-  const dispatch = useDispatch();
 
-  const { categName } = useSelector((state) => state.catalogReducer);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  const {categName, allProducts} = useSelector(state=> state.catalogReducer)
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -51,16 +104,36 @@ export const NavBar = () => {
     setAnchorElNav(null);
   };
 
+
+//   const HandleLogout = () => {
+//   dispatch({ type: type.logout})
+
+//   navigate('/catalogo', { 
+//     replace: true
+//   })
+// }
+const handleCloseUserMenu = () => {
+  setAnchorElUser(null);
+};
+  const HandleLogin = () => {
+    dispatch({ type: type.login})
+
+    navigate('/catalogo', { 
+     replace: true
+  })
+  };
+
+
   return (
-    <AppBar position="fixed">
+    <div >
+    <SearchBar sx={{zIndex:0}} />
+    <AppBar sx={{ position:'-webkit-sticky',top:0 }} >
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <IconButton component={RouterLink} to="/">
-            <Avatar
-              alt="logo"
-              src={logo}
-              sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-            />
+
+        <Toolbar >
+          <IconButton component={RouterLink} to='/' >
+            <Avatar alt='logo' src={logo} sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+
           </IconButton>
           <Typography
             variant="h6"
@@ -68,13 +141,14 @@ export const NavBar = () => {
             component={RouterLink}
             to="/"
             sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
+
+              mr: 1,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 800,
+              color: 'white',
+              textDecoration: 'none',
+
             }}
           >
             HEALTHY FOOD
@@ -109,31 +183,30 @@ export const NavBar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography
-                  textAlign="center"
-                  component={RouterLink}
-                  sx={{ textDecoration: "none", color: "inherit" }}
-                  to="catalogo"
-                  onClick={() => dispatch({ type: "RESET_CATEG_NAME" })}
-                  replace={true}
-                >
-                  Catálogo
-                </Typography>
-              </MenuItem>
+              
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography 
+                    textAlign="center"
+                    component={RouterLink}
+                    sx={{textDecoration:'none', color:'inherit'}}
+                    to='catalogo'
+                    onClick={()=> dispatch({type:'RESET_CATALOG', payload:allProducts})}
+                    replace={true}
+                    >Catálogo</Typography>
+                </MenuItem>
+                
+                <FilterAcordion/>   
 
-              <FilterAcordion />
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography 
+                    textAlign="center"
+                    component={RouterLink}
+                    sx={{textDecoration:'none', color:'inherit'}}
+                    to='contacto'
+                    >Contacto</Typography>
+                </MenuItem>      
+              
 
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography
-                  textAlign="center"
-                  component={RouterLink}
-                  sx={{ textDecoration: "none", color: "inherit" }}
-                  to="contacto"
-                >
-                  Contacto
-                </Typography>
-              </MenuItem>
             </Menu>
           </Box>
           <IconButton component={RouterLink} to="/">
@@ -153,34 +226,46 @@ export const NavBar = () => {
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
+
+              letterSpacing: '.1rem',
+              color: 'white',
+              textDecoration: 'none',
+
             }}
           >
             HEALTHY FOOD
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button
-              onClick={() => dispatch({ type: "RESET_CATEG_NAME" })}
-              sx={{ my: 2, color: "white", display: "block" }}
-              component={RouterLink}
-              to="catalogo"
-            >
-              Catálogo
-            </Button>
 
-              {categName.map((el, i)=> <FilterSelect key={i} categTitle={el} />) }
-              
+          <Box alignItems="center" justifyContent="center"spacing={0} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent:'space-around', p:0 }}>
+            
+            <Box  >
+              <Button
+                onClick={()=> dispatch({type:'RESET_CATALOG'})}
+                sx={{  color: 'white',  }}
+                component={RouterLink}
+                to='catalogo'
+              >
+                Catálogo
+              </Button>
+            </Box>
+                  {categName.map((el, i)=> (
+                    <Box  key={i} sx={{float:'inline-end'}} >
+                      <Filters categTitle={el} handleCloseNavMenu={handleCloseNavMenu}  />
+                    </Box>
+                    ) )
+                  }
+            <Box>
+
               <Button
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: 'white',   }}
                 component={RouterLink}
                 to='contacto'
               >
                 Contacto
               </Button>
-              
+
+              //a partir de aqui checkear
               {console.log(user)}
               { user.logged? 
               // <Button 
@@ -197,12 +282,54 @@ export const NavBar = () => {
                 component={RouterLink}
                 to={'login'}
               >Iniciar sesión
+              //hasta aqui
+
+
+              {/* <Button 
+                onClick={() => console.dir(auth.currentUser)}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+                component={RouterLink}
+                to={'login'}
+              >{(auth.currentUser === null )? 'Inicia Sesión' : 'Bienvenido ' + auth.currentUser.email}
+              </Button> */}
+              {/* {
+                (! auth.accessToken == null) ? 
+              <Button 
+                onClick={signOut(auth)}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+                component={RouterLink}
+                to='catalogo'
+              >Cerrar Sesión
+              </Button> 
+              :
+              <Button 
+               sx={{ my: 2, color: 'white', display: 'block' }}
+               component={RouterLink}
+               to='login'
+              > Iniciar sesión
+             </Button>
+              } */}
+              {/* <Button 
+                sx={{ my: 2, color: 'white', display: 'block' }}
+                component={RouterLink}
+                to='registro'
+              >Regístrate
+//revisar
+
               </Button>
                 }
           </Box>
 
+
           {/* <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Open settings"> */}
+
+           </Box>
+          </Box>
+
+          <Box sx={{ flexGrow: 0, position:'relative' }}>
+            <Tooltip title={(auth.accessToken == null)? 'Iniciar Sesión': 'Mi perfil'}>
+
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <AccountCircleIcon />
               </IconButton>
@@ -223,15 +350,32 @@ export const NavBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box> */}
+              {(auth.accessToken == null)
+                  ? <Button 
+                  component={RouterLink}
+                  to='login'
+                 > Iniciar sesión
+                  </Button>
+                  :
+                  logged.map( (el, i) => (
+                  <MenuItem key={i} onClick={handleCloseUserMenu}>
+                    <Typography 
+                      textAlign="center"
+                      component={RouterLink}
+                      to={el.link}
+                      >
+  
+                      {el.label}
+                      </Typography>
+                  </MenuItem>
+                  ))
+                
+              }
+              </Menu>
+          </Box> 
         </Toolbar>
       </Container>
     </AppBar>
+    </div>
   );
 };

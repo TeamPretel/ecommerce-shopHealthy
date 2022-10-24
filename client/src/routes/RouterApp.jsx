@@ -1,5 +1,7 @@
+import Search from "@mui/icons-material/Search";
 import { Route, Routes } from "react-router-dom";
 import { NavBar } from "../components/NavBar";
+import { SearchBar } from "../components/Search";
 import {
   Admin,
   Contact,
@@ -24,7 +26,7 @@ export const RouterApp = () => {
         <Route path="/registro" element={<Register />} />
         <Route path="/comprar" element={<Shopping />} />
         <Route path="/contacto" element={<Contact />} />
-        <Route path="/user/:id" element={<User />} />
+        <Route path="/user" element={<User />} />
         <Route path="/admin" element={<Admin />} />
       </Routes>
     </>

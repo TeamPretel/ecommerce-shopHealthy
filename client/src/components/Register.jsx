@@ -14,6 +14,7 @@ import Container from '@mui/material/Container';
 import { Home } from '../pages';
 import{Link as RouterLink} from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
+
 import { useContext } from "react";
 import { AuthContext } from "../auth/AuthContext";
 import { type } from "../../types";
@@ -21,6 +22,9 @@ import firebaseApp from '../credenciales'
 import {getAuth, createUserWithEmailAndPassword, signInWithRedirect,GoogleAuthProvider,signInWithPopup } from 'firebase/auth'
 const auth= getAuth(firebaseApp)
 const googleProvider = new GoogleAuthProvider();
+
+import {getAuth, signInWithEmailAndPassword,signInWithRedirect,GoogleAuthProvider,} from 'firebase/auth'
+
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>

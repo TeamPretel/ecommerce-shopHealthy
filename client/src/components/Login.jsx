@@ -15,12 +15,14 @@ import { Home, Register } from "../pages";
 import { Link as RouterLink } from "react-router-dom";
 import firebaseApp from '../credenciales'
 import { useNavigate } from "react-router-dom";
+
 import { useContext } from "react";
 import { AuthContext } from "../auth/AuthContext";
 import {getAuth, signInWithEmailAndPassword,signInWithRedirect,GoogleAuthProvider,} from 'firebase/auth'
 import { type } from "../../types";
 const auth= getAuth(firebaseApp)
 const googleProvider = new GoogleAuthProvider();
+
 
 function Copyright(props) {
   return (
@@ -47,8 +49,7 @@ export const Login_comp =  (props) => {
   let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    
+    e.preventDefault();    
     const correo= e.target.email.value
     const contraseña= e.target.password.value
     // console.log(correo,contraseña)
@@ -69,8 +70,6 @@ export const Login_comp =  (props) => {
     alert('EXITO, Inicio correcto')
     navigate('/catalogo')
     
-
-
     // const data = new FormData(event.currentTarget);
     // console.log({
     //   email: data.get("email"),
@@ -137,9 +136,11 @@ export const Login_comp =  (props) => {
               Iniciar Sesión
             </Button>
 
+
             <Button onClick={() => console.log(signInWithRedirect(auth, googleProvider))} 
             type="submit" fullWidth variant="contained" to='/catalogo' sx={{ mt: 1 }} >
              Inicia Sesión con Google
+
             </Button>
 
             <Grid container>
