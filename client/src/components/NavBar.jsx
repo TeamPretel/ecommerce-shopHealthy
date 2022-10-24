@@ -21,7 +21,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import firebaseApp from '../credenciales'
 import {getAuth, signOut} from 'firebase/auth'
-const auth= getAuth(firebaseApp)
+
 console.dir(auth)
 
 import { Link as RouterLink, Navigate, useNavigate} from 'react-router-dom';
@@ -35,7 +35,7 @@ import { AuthContext } from "../auth/AuthContext";
 import { type } from '../../types/index'
 import firebaseApp from '../credenciales'
 import {getAuth, signOut} from 'firebase/auth'
-const auth= getAuth(firebaseApp)
+
 
 import { Checkbox, Grid } from '@mui/material';
 import { Filters } from './Filters';
@@ -82,13 +82,12 @@ export const NavBar = () => {
 
   const [logeado, setLogeado] = useState(false)
   const {user} = useContext(AuthContext)
-  const navigate = useNavigate();
 
 
 
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   
   const {categName, allProducts} = useSelector(state=> state.catalogReducer)
 
