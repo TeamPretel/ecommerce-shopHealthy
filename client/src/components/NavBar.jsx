@@ -1,4 +1,4 @@
-import { AuthContext } from "../auth/AuthContext";
+// import { AuthContext } from "../auth/AuthContext";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -19,7 +19,7 @@ import { FilterAcordion} from './FilterAcordion';
 import { FilterSelect } from './FilterSelect';
 import { useDispatch, useSelector } from 'react-redux';
 import HandleLogout from '../helpers/HandleLogOut'
-import { useContext } from "react";
+// import { useContext } from "react";
 import { AuthContext } from "../auth/AuthContext";
 import { type } from '../../types/index'
 import firebaseApp from '../credenciales'
