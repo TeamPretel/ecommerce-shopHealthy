@@ -1,4 +1,3 @@
-
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,27 +13,35 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import logo from '../assets/logo.png';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Link as RouterLink, useNavigate} from 'react-router-dom';
-import { FilterAcordion} from './FilterAcordion';
-import { FilterSelect } from './FilterSelect';
+
+
 import { useDispatch, useSelector } from 'react-redux';
 
 import firebaseApp from '../credenciales'
 import {getAuth, signOut} from 'firebase/auth'
 const auth= getAuth(firebaseApp)
 console.dir(auth)
+import { Link as RouterLink, Navigate, useNavigate} from 'react-router-dom';
+import { FilterAcordion} from './FilterAcordion';
+import { FilterSelect } from './FilterSelect';
+import { useDispatch, useSelector } from 'react-redux';
+import { Checkbox, Grid } from '@mui/material';
+import { Filters } from './Filters';
+import { SearchBar } from './Search';
+
+
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const navigate = useNavigate();
-
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  const {categName, allProducts} = useSelector(state=> state.catalogReducer)
 
-  const { categName } = useSelector((state) => state.catalogReducer);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -64,15 +71,15 @@ export const NavBar = () => {
   };
 
   return (
-    <AppBar position="fixed">
+    <div >
+    <SearchBar sx={{zIndex:0}} />
+    <AppBar sx={{ position:'-webkit-sticky',top:0 }} >
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <IconButton component={RouterLink} to="/">
-            <Avatar
-              alt="logo"
-              src={logo}
-              sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
-            />
+
+        <Toolbar >
+          <IconButton component={RouterLink} to='/' >
+            <Avatar alt='logo' src={logo} sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+
           </IconButton>
           <Typography
             variant="h6"
@@ -80,13 +87,14 @@ export const NavBar = () => {
             component={RouterLink}
             to="/"
             sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
+
+              mr: 1,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 800,
+              color: 'white',
+              textDecoration: 'none',
+
             }}
           >
             HEALTHY FOOD
@@ -121,31 +129,30 @@ export const NavBar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography
-                  textAlign="center"
-                  component={RouterLink}
-                  sx={{ textDecoration: "none", color: "inherit" }}
-                  to="catalogo"
-                  onClick={() => dispatch({ type: "RESET_CATEG_NAME" })}
-                  replace={true}
-                >
-                  Catálogo
-                </Typography>
-              </MenuItem>
+              
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography 
+                    textAlign="center"
+                    component={RouterLink}
+                    sx={{textDecoration:'none', color:'inherit'}}
+                    to='catalogo'
+                    onClick={()=> dispatch({type:'RESET_CATALOG', payload:allProducts})}
+                    replace={true}
+                    >Catálogo</Typography>
+                </MenuItem>
+                
+                <FilterAcordion/>   
 
-              <FilterAcordion />
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography 
+                    textAlign="center"
+                    component={RouterLink}
+                    sx={{textDecoration:'none', color:'inherit'}}
+                    to='contacto'
+                    >Contacto</Typography>
+                </MenuItem>      
+              
 
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography
-                  textAlign="center"
-                  component={RouterLink}
-                  sx={{ textDecoration: "none", color: "inherit" }}
-                  to="contacto"
-                >
-                  Contacto
-                </Typography>
-              </MenuItem>
             </Menu>
           </Box>
           <IconButton component={RouterLink} to="/">
@@ -165,28 +172,37 @@ export const NavBar = () => {
               flexGrow: 1,
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
+
+              letterSpacing: '.1rem',
+              color: 'white',
+              textDecoration: 'none',
             }}
           >
             HEALTHY FOOD
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button
-              onClick={() => dispatch({ type: "RESET_CATEG_NAME" })}
-              sx={{ my: 2, color: "white", display: "block" }}
-              component={RouterLink}
-              to="catalogo"
-            >
-              Catálogo
-            </Button>
+          <Box alignItems="center" justifyContent="center"spacing={0} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent:'space-around', p:0 }}>
+            
+            <Box  >
+              <Button
+                onClick={()=> dispatch({type:'RESET_CATALOG'})}
+                sx={{  color: 'white',  }}
+                component={RouterLink}
+                to='catalogo'
+              >
+                Catálogo
+              </Button>
+            </Box>
+                  {categName.map((el, i)=> (
+                    <Box  key={i} sx={{float:'inline-end'}} >
+                      <Filters categTitle={el} handleCloseNavMenu={handleCloseNavMenu}  />
+                    </Box>
+                    ) )
+                  }
+            <Box>
 
-              {categName.map((el, i)=> <FilterSelect key={i} categTitle={el} />) }
-              
               <Button
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: 'white',   }}
                 component={RouterLink}
                 to='contacto'
               >
@@ -255,5 +271,6 @@ export const NavBar = () => {
         </Toolbar>
       </Container>
     </AppBar>
+    </div>
   );
 };

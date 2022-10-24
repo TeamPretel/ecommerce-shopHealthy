@@ -1,6 +1,8 @@
 
 const initialState = {
     products: [],
+    filteredProducts:[],
+    nestedFilter: [],
     allProducts: [],
     isLoading: null,
     error: null,
@@ -46,14 +48,38 @@ export const catalogReducer = (state= initialState, action)=>{
             return{
                 ...state,
                 products: action.payload.data,
+                filteredProducts: action.payload.data,
                 categ: action.payload.cat,
                 setBanner: false
             }
-        case 'RESET_CATEG_NAME':
+        case 'ADD':
             return{
                 ...state,
-                categName: action.payload,
-                products: allProducts
+                filteredProducts: state.products
+            }
+        case 'ADD_NESTED_FILTER':
+            return{
+                ...state,
+                products: action.payload.data,
+                nestedFilter: action.payload.data,
+                categ: action.payload.cat,
+                setBanner:false
+            }
+        case 'REMOVE_FILTER':
+           return {
+                ...state,
+                products: action.payload.data,
+                nestedFilter: action.payload.newNested,
+                categ: action.payload.cat,
+                setBanner: false
+            }
+        case 'RESET_CATALOG':
+            return {
+                ...state,
+                products: state.allProducts,
+                nestedFilter: [],
+                filteredProducts: [],
+                setBanner: true
             }
         case 'ORDER_ASC':
             return {
