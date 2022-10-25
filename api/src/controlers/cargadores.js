@@ -40,7 +40,6 @@ productos.forEach(async c => {
     await Promise.all(
       c.idCategoria.split(',').map(async (uwu) => {
         const unaCategoria = await Categoria.findByPk(uwu)
-        console.log(idCategoria)
         nuevoProducto.addCategoria(unaCategoria)
       })
     )

@@ -39,13 +39,21 @@ export const ProductDetail_comp = () => {
   
   // if(!isLoading) return <Skeleton/>
   
+<<<<<<< HEAD
   const { nombre, precio, img:coso } = product;
+=======
+  const { nombre, precio, img } = product;
+>>>>>>> d700cc4ea0da4328823679ecce3e6e009c6a4c11
   
 
   return (
     <Grid container >
       <Grid sx={{ margin: "150px auto", display: "flex" }}>
+<<<<<<< HEAD
         <CardMedia  component="img" sx={{height:"500px"}} image={`https://${coso}`} alt={nombre}/>
+=======
+        <CardMedia  component="img" sx={{height:"500px"}} image={`https://dkndrd.com/pf-healthyShop/${img}`} alt={nombre}/>
+>>>>>>> d700cc4ea0da4328823679ecce3e6e009c6a4c11
         <Grid sx={{ margin: "150px auto", display: "column" }}>
           <Typography sx={{fontSize:30}}
             variant="body2"
