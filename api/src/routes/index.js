@@ -15,7 +15,11 @@ const {
 
 
 const router = Router();
+<<<<<<< HEAD
 router.get("/tresmiluno/", async (req, res) => {
+=======
+router.get("/tresmiluno", async (req, res) => {
+>>>>>>> origin/ramajavo
     res.sendFile(path.join(__dirname+'/index.html'))
 })
 
@@ -37,9 +41,15 @@ router.get("/tresmiluno/droptodo", async (req, res) => {
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 
+<<<<<<< HEAD
 router.use('/tresmiluno/usuario',usuarioruta)
 router.use('/tresmiluno/producto', productosRuta)
 router.use('/tresmiluno/categoria', categoriasRuta)
 router.use('/tresmiluno/marca',marcasRuta)
+=======
+router.use('/tresmiluno/productos', productosRuta)
+router.use('/tresmiluno/categorias', categoriasRuta)
+router.use('/tresmiluno/marcas',marcasRuta)
+>>>>>>> origin/ramajavo
 
 module.exports = router;
