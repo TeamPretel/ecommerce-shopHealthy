@@ -13,13 +13,6 @@ server.use(bodyParser.json({ limit: '50mb' }));
 server.use(cookieParser());
 server.use(morgan(':method :url :status :res[content-length] - :response-time ms'));
 server.use((req, res, next) => {
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> origin/ramajavo
   res.header('Access-Control-Allow-Origin', '*'); 
   res.header('Access-Control-Allow-Credentials', 'true'); 
 
