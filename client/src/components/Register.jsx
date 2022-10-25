@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -31,6 +32,8 @@ import {
 const auth = getAuth(firebaseApp);
 const googleProvider = new GoogleAuthProvider();
 =======
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -56,7 +59,10 @@ import {getAuth, createUserWithEmailAndPassword, signInWithRedirect,GoogleAuthPr
 const auth= getAuth(firebaseApp)
 const googleProvider = new GoogleAuthProvider();
 
+<<<<<<< HEAD
 >>>>>>> d700cc4ea0da4328823679ecce3e6e009c6a4c11
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
 
 function Copyright(props) {
   return (
@@ -83,6 +89,7 @@ export const Register_comp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 <<<<<<< HEAD
+<<<<<<< HEAD
     const correo = e.target.email.value;
     const contraseña = e.target.password.value;
 
@@ -92,16 +99,22 @@ export const Register_comp = () => {
       contraseña
     );
 =======
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
     const correo= e.target.email.value
     const contraseña= e.target.password.value
     console.log(correo,contraseña)
     
     const usuario = await createUserWithEmailAndPassword(auth,correo,contraseña)
+<<<<<<< HEAD
 >>>>>>> d700cc4ea0da4328823679ecce3e6e009c6a4c11
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
 
     const action = {
       type: type.login,
       payload: {
+<<<<<<< HEAD
 <<<<<<< HEAD
         name: usuario.user.email,
       },
@@ -110,6 +123,8 @@ export const Register_comp = () => {
     alert("EXITO, falta componente MATERIAL UI");
     navigate("/catalogo");
 =======
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
         name: usuario.user.email
       }
     }
@@ -120,7 +135,10 @@ export const Register_comp = () => {
     navigate('/catalogo')
 
 
+<<<<<<< HEAD
 >>>>>>> d700cc4ea0da4328823679ecce3e6e009c6a4c11
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
   };
 
   const handleSubmitGoogle =  async  (e) => {
@@ -183,6 +201,7 @@ export const Register_comp = () => {
 
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Container component="main" maxWidth="xs" sx={{ marginTop: "100px" }}>
       <CssBaseline />
       <Box
@@ -230,6 +249,8 @@ export const Register_comp = () => {
             </Grid>
           </Grid>
 =======
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
       <Container component="main" maxWidth="xs" sx={{marginTop:"100px"}}>
         <CssBaseline />
         <Box
@@ -306,35 +327,29 @@ export const Register_comp = () => {
             >
              Registrate con Google
             </Button>
+<<<<<<< HEAD
 >>>>>>> d700cc4ea0da4328823679ecce3e6e009c6a4c11
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Registrarse
-          </Button>
-          <Button
-            onClick={() => signInWithRedirect(auth, googleProvider)}
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Acceder con Google
-          </Button>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link component={RouterLink} to="/login" variant="body2">
-                Ya tenes una cuenta? Login
-              </Link>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Registrarse
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link component={RouterLink} to = '/login' variant="body2">
+                  Ya tenes una cuenta? Login
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
+          </Box>
         </Box>
-      </Box>
-      <Copyright sx={{ mt: 5 }} />
-    </Container>
+        <Copyright sx={{ mt: 5 }} />
+      </Container>
   );
 };

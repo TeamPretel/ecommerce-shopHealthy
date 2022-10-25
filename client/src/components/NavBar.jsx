@@ -1,7 +1,10 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // import { AuthContext } from "../auth/AuthContext";
 =======
 >>>>>>> d700cc4ea0da4328823679ecce3e6e009c6a4c11
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -26,6 +29,7 @@ import { FilterAcordion} from './FilterAcordion';
 import { useDispatch, useSelector } from 'react-redux';
 
 import HandleLogout from '../helpers/HandleLogOut'
+<<<<<<< HEAD
 // import { useContext } from "react";
 import { AuthContext } from "../auth/AuthContext";
 import { type } from '../../types/index'
@@ -35,6 +39,11 @@ const auth= getAuth(firebaseApp)
 console.dir(auth)
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 =======
+=======
+import { AuthContext } from "../auth/AuthContext";
+import { type } from '../../types/index'
+import {getAuth, signOut} from 'firebase/auth'
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
 
 import { Checkbox, Grid } from '@mui/material';
 import { Filters } from './Filters';
@@ -75,7 +84,10 @@ const admin =[
 ]
 
 
+<<<<<<< HEAD
 >>>>>>> d700cc4ea0da4328823679ecce3e6e009c6a4c11
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
 export const NavBar = () => {
   const { estadoGlobal, manejarUsuario } = useContext(AuthContext)
 
@@ -263,11 +275,16 @@ const handleCloseUserMenu = () => {
                 Contacto
               </Button>
 <<<<<<< HEAD
+<<<<<<< HEAD
               
 =======
 
               {/* //a partir de aqui checkear
 >>>>>>> d700cc4ea0da4328823679ecce3e6e009c6a4c11
+=======
+
+              {/* //a partir de aqui checkear
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
               {console.log(user)}
               { user.logged? 
               // <Button 
@@ -285,7 +302,10 @@ const handleCloseUserMenu = () => {
                 to={'login'}
               >Iniciar sesión
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
               <Button />
               //hasta aqui */}
 
@@ -320,7 +340,10 @@ const handleCloseUserMenu = () => {
                 to='registro'
               >Regístrate
 //revisar
+<<<<<<< HEAD
 >>>>>>> d700cc4ea0da4328823679ecce3e6e009c6a4c11
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
               </Button>
                 }
           </Box>

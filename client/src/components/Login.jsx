@@ -1,5 +1,4 @@
 // import { AuthContext } from "../auth/AuthContext";
-import { useContext } from 'react';
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -17,11 +16,16 @@ import { Link as RouterLink } from "react-router-dom";
 import firebaseApp from '../credenciales'
 import { useNavigate } from "react-router-dom";
 <<<<<<< HEAD
+<<<<<<< HEAD
 // import { useContext } from "react";
 =======
 
 import { useContext } from "react";
 >>>>>>> d700cc4ea0da4328823679ecce3e6e009c6a4c11
+=======
+
+import { useContext } from "react";
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
 import { AuthContext } from "../auth/AuthContext";
 import {getAuth, createUserWithEmailAndPassword, signInWithRedirect,GoogleAuthProvider,signInWithPopup } from 'firebase/auth'
 import { type } from "../../types";
@@ -29,9 +33,13 @@ const auth= getAuth(firebaseApp)
 const googleProvider = new GoogleAuthProvider();
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> d700cc4ea0da4328823679ecce3e6e009c6a4c11
+=======
+
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
 function Copyright(props) {
   return (
     <Typography
@@ -86,7 +94,10 @@ export const Login_comp =  () => {
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
   const handleSubmitGoogle =  async  (e) => {
     signInWithPopup(auth, googleProvider)
     .then((result) => {
@@ -138,7 +149,10 @@ export const Login_comp =  () => {
 
 
 
+<<<<<<< HEAD
 >>>>>>> d700cc4ea0da4328823679ecce3e6e009c6a4c11
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
   return (
       <Container component="main" maxWidth="xs" sx={{marginTop:"100px"}}>
         <CssBaseline />
@@ -196,16 +210,24 @@ export const Login_comp =  () => {
             </Button>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Button onClick={() => signInWithRedirect(auth, googleProvider)} 
+=======
+
+            <Button onClick={handleSubmitGoogle} 
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
             type="submit" fullWidth variant="contained" to='/catalogo' sx={{ mt: 1 }} >
              Inicia Sesión con Google
 =======
 
+<<<<<<< HEAD
             <Button onClick={handleSubmitGoogle} 
             type="submit" fullWidth variant="contained" to='/catalogo' sx={{ mt: 1 }} >
              Inicia Sesión con Google
 
 >>>>>>> d700cc4ea0da4328823679ecce3e6e009c6a4c11
+=======
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d
             </Button>
 
             <Grid container>

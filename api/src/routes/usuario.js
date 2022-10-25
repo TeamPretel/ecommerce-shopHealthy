@@ -14,6 +14,7 @@ router.get("/usuarios", async (req, res) => {
       res.status(400).send(error);
     }
   });
+<<<<<<< HEAD:api/src/routes/usuario.js
 
 router.post('/consulta', async (req,res)=>{
   console.log(req.body)
@@ -44,10 +45,39 @@ router.post('/consulta', async (req,res)=>{
       Telefono:${telefono}<br> 
       Mensaje:${mensaje}</p>`)
   })
+=======
+  //        /tresmiluno/usuario/consulta
+  router.post('/consulta', async (req,res)=>{
+    console.log(req.body)
+const {nombre, apellido, email, telefono, mensaje}=req.body;
+
+    const transport = nodemailer.createTransport({
+        host: 'smtp-mail.outlook.com',
+        port: 587,   
+        secure: false,
+        auth: {
+            user:'healthyshophenry@outlook.com',
+            pass: 'proyectogripal7'
+        },
+        tls: {
+            rejectUnauthorized: false   //permite mandar mails desde otro lado q no sea el localhost
+        }
+    })
+  
+    const info = await transport.sendMail({
+        from: 'healthyshophenry@outlook.com',
+        to: 'healthyshophenry@outlook.com',     
+        subject: `Consulta de ${email}`,
+       
+       html: (`<p>       
+       Email: ${email}<br>
+       Mensaje: ${mensaje}</p>`)
+    })
+>>>>>>> 70a1947cc1e80c4f7895339109536c501dcfe02d:api/src/routes/usuarios.js
 
     console.log('Message sent', info.messageId)
 
-    res.send('received papaá!!!!')
+    res.send('Mensaje Registrado!')
 })
 
 router.post("/crear", async (req, res) => {
