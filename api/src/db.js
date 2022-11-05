@@ -46,17 +46,16 @@ Marca.hasMany(Producto, {
   foreignKey: 'marcaId'
 })
 
+// Detalleventa.belongsTo(Venta)
+// Venta.hasMany(Detalleventa)
 
-Detalleventa.belongsTo(Venta)
-Venta.hasMany(Detalleventa)
+// Producto.hasMany(Detalleventa)
+// Detalleventa.belongsTo(Producto)
 
-Producto.hasMany(Detalleventa)
-Detalleventa.belongsTo(Producto)
-
-Usuario.hasMany(Venta, {
-  foreignKey: 'usuarioId'
-})
-Venta.belongsTo(Usuario)
+// Usuario.hasMany(Venta, {
+//   foreignKey: 'usuarioId'
+// })
+// Venta.belongsTo(Usuario)
 
 /* Detalleventa.belongsTo(Usuario)
 Usuario.hasMany(Detalleventa)

@@ -2,34 +2,34 @@ const { Router } = require('express')
 const nodemailer = require('nodemailer')
 const router = Router()
 
-const { MAIL_USER, MAIL_PASS } = process.env; 
-  
-router.post('/', async (req,res)=>{
-    console.log(req.body)
+const { MAIL_USER, MAIL_PASS } = process.env
 
-    const transport = nodemailer.createTransport({
-        host: 'smtp-mail.outlook.com',
-        port: 587,   //con ssl o 25 sin ssl
-        secure: false,
-        auth: {
-            user: MAIL_USER,
-            pass: MAIL_PASS
-        },
-        tls: {
-            rejectUnauthorized: false   //permite mandar mails desde otro lado q no sea el localhost
-        }
-    })
+router.post('/', async (req, res) => {
+  console.log(req.body)
 
-    const info = await transport.sendMail({
-        from: 'healthyshophenry@outlook.com',
-        to: 'healthyshophenry@outlook.com',     //
-        subject: 'Prueba de almacén saludable autoemail',
-        text: 'anduvo el envio del correo nodemailer'
-    })
+  const transport = nodemailer.createTransport({
+    host: 'smtp-mail.outlook.com',
+    port: 587, // con ssl o 25 sin ssl
+    secure: false,
+    auth: {
+      user: MAIL_USER,
+      pass: MAIL_PASS
+    },
+    tls: {
+      rejectUnauthorized: false // permite mandar mails desde otro lado q no sea el localhost
+    }
+  })
 
-    console.log('Message sent', info.messageId)
+  const info = await transport.sendMail({
+    from: 'healthyshophenry@outlook.com',
+    to: 'healthyshophenry@outlook.com',
+    subject: 'Prueba de almacén saludable autoemail',
+    text: 'anduvo el envio del correo nodemailer'
+  })
 
-    res.send('received')
+  console.log('Message sent', info.messageId)
+
+  res.send('received')
 })
 
-module.exports = router;
+module.exports = router

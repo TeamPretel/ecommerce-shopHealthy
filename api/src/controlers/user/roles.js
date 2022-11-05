@@ -1,0 +1,6 @@
+const SUPER_ADMIN = 'SUPER_ADMIN'
+const ADMIN = 'ADMIN'
+const REGULAR = 'REGULAR'
+const GUEST = 'GUEST'
+
+module.exports = { SUPER_ADMIN, ADMIN, REGULAR, GUEST }

@@ -1,0 +1,5 @@
+const { Router } = require('express ')
+const { Usuario } = require('../../db')
+const router = Router()
+const nodemailer = require('nodemailer')
+const { check, validationResult } = require('express-validator')
