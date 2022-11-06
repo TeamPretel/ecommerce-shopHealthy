@@ -6,7 +6,6 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://dukindroid-firebase-test.firebaseio.com'
 })
-const myUsers = []
 const auth = admin.auth()
 
 const listAllUsers = (nextPageToken) => {

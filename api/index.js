@@ -1,9 +1,8 @@
 require('dotenv').config()
 console.log(process.env.DB_HOST)
-
-// const { Sequelize } = require('sequelize')
-const server = require('./src/app.js')
 const { conn } = require('./src/db')
+const server = require('./src/app.js')
+// const { Sequelize } = require('sequelize')
 
 // conn.drop() // Syncing all the models at once.
 conn.sync({ force: false }).then(() => {

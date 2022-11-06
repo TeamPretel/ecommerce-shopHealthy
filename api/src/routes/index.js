@@ -4,17 +4,16 @@ const path = require('path')
 const { conn } = require('../db')
 const cargadores = require('../controlers/cargadores')
 
-const rutaCategoria = require('./categoria')
-const rutaProducto = require('./producto')
-const rutaMarca = require('./marca')
-const rutaUsuario = require('./usuario')
+const routes = Router()
+routes.use('/producto', require('./producto'))
+routes.use('/marca', require('./marca'))
+routes.use('/categoria', require('./categoria'))
+routes.use('/usuario', require('./usuario'))
 // const Marca = require('../models/Marca')
 // const compraRuta = require('./rutapago')
 // const reviewRuta = require('./review')
 
-const router = Router()
-
-router.get('/tresmiluno', async (req, res) => {
+routes.get('/', async (req, res) => {
   res.sendFile(path.join(path.resolve() + '/index.html'))
 })
 
@@ -23,7 +22,7 @@ const {
   marcasCarga,
   productosCarga
 } = cargadores
-router.get('/tresmiluno/droptodo', async (req, res) => {
+routes.get('/droptodo', async (req, res) => {
   await conn.query('SET FOREIGN_KEY_CHECKS = 0')
   await conn.drop()
   await conn.sync({ force: false })
@@ -36,9 +35,5 @@ router.get('/tresmiluno/droptodo', async (req, res) => {
 })
 
 // Configurar los routers
-router.use('/tresmiluno/usuario', rutaUsuario)
-router.use('/tresmiluno/producto', rutaProducto)
-router.use('/tresmiluno/categoria', rutaCategoria)
-router.use('/tresmiluno/marca', rutaMarca)
 
-module.exports = router
+module.exports = routes

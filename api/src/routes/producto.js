@@ -160,7 +160,7 @@ router.post('/admin/crear', async (req, res) => {
 
     auxiliar?.map((id) => {
       Categoria.findByPk(id).then((esaCategoria) => {
-        Producto.findByPk(producto.id) //aca va el id del producto creado
+        Producto.findByPk(producto.id) // aca va el id del producto creado
           .then((productoNuevo) => {
             esaCategoria.addProducto(productoNuevo)
           })
