@@ -20,25 +20,21 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function NotFound404() {
+export default function Producto404() {
   return (
     <>
       <Helmet>
-        <title> 404 | No existe la página </title>
+        <title> 404 | Producto no existe </title>
       </Helmet>
 
-      <Box sx={{display: 'flex',bgcolor:'#637381', height:'90px', textAlign:'center', alignItems:'center' }}>
-        <Avatar src={Logo} alt='logo' sx={{mr:3}} />
-        <Typography  sx={{fontWeight:600, color:'white'}} >HEALTHY SHOP</Typography>
-      </Box>
       <Container >
         <StyledContent sx={{ textAlign: 'center', alignItems: 'center' }}>
           <Typography variant="h3" paragraph>
-            ¡Página no encontrada!
+            ¡Producto no encontrado!
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-          Lo sentimos, no pudimos encontrar la página que estás buscando.
+          Lo sentimos, no pudimos encontrar el producto que estás buscando. ¿Quizás has escrito mal la URL?.
           </Typography>
 
           <Box

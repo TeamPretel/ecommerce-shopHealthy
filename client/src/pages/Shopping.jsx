@@ -59,7 +59,7 @@ export const Shopping = ()=> {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-
+  
   useEffect(() => {
     dispatch(initProducts())
   }, [dispatch]);
@@ -78,9 +78,13 @@ export const Shopping = ()=> {
     
   }
 
+  const onSubmit = (e,d)=>{
+
+  }
+
   return (
     <>
-      <Container>
+      <Container sx={{ minWidth:'90%'}} >
       <Box>
         <Button startIcon={<ChevronLeftIcon/>} onClick={()=>navigate(-1)}  > Volver a la tienda</Button>
         <Typography variant='subtitle2' sx={{fontSize:25, my:2}} > Finaliza tu compra </Typography>
@@ -139,7 +143,12 @@ export const Shopping = ()=> {
                   <TableRow key={ row.id }>
                     <TableCell>{ row.nombre }</TableCell>
                     <TableCell sx={{maxHeight:'100px'}} > <img width="100px" src={`https://res.cloudinary.com/dw8jw0zhx/image/upload/v1667676017/healthy_shop_default/${row.img}`} alt={ row.nombre } /></TableCell>
-                    <TableCell align="right" sx={{textAlign:'center'}} >{row.quantity}</TableCell>
+                    <TableCell align="right" sx={{textAlign:'center'}} > 
+                                                <Stack sx={{p:0,}} >
+                                                  <Contador defaultValue={row.quantity} id={row.id} maxValue={row.stock} />
+                                                  <Typography variant='body2' sx={{p:0, m:0, opacity:'60%' }} >{`En stock: ${row.stock}` }</Typography> 
+                                                </Stack>
+                    </TableCell>
                     <TableCell align="right" sx={{textAlign:'center'}} >{fCurrency(row.precio)}</TableCell>
                     <TableCell align="right" sx={{textAlign:'center'}} >{fCurrency(row.precio * row.quantity)}</TableCell>
                   </TableRow>
@@ -156,12 +165,21 @@ export const Shopping = ()=> {
           </TableContainer>
         </Grid>
         <Grid item xs={4} >
-            <Stack  spacing={3} >
-              <Typography sx={{border:'1px solid black'}} >stack1</Typography>
-              <Typography sx={{border:'1px solid black'}} >stack2</Typography>
-              <Typography sx={{border:'1px solid black'}} >stack2</Typography>
-              <Typography sx={{border:'1px solid black'}} >stack2</Typography>
+            <Stack  spacing={4} sx={{justifyContent:'center', alingItems:'center', display:'flex', }} >
+              <MercadoPagoCart />
+              <Button
+                startIcon={<ShieldIcon/>}
+                variant='contained'
+                onClick={onSubmit}
+                
+              >
+                {`Total a pagar ${fCurrency(subtotal)} `}
+              </Button>
+              <Typography variant='body2' sx={{fontSize:'0.75rem', opacity:'70%'}} > Al confirmar tu compra, te redirigiremos a tu cuenta de Mercado Pago </Typography>
             </Stack>
+        </Grid>
+        <Grid item xs={8} >
+          <FormCarrito onSubmit={onSubmit}/>
         </Grid>
       </Grid>
 

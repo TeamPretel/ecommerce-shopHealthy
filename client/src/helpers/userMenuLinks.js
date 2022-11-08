@@ -11,7 +11,7 @@
         link: `/usuario/${nombreToShow}/lista-de-deseos`
       },{
         label: `Compras`,
-        link: `/usuario/${nombreToShow}/comprar`
+        link: `/usuario/${nombreToShow}/mis_compras`
       },
     ]
   }  

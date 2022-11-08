@@ -13,7 +13,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Home, Register } from "../pages";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, Navigate } from "react-router-dom";
 import firebaseApp from '../credenciales'
 import { useNavigate } from "react-router-dom";
 
@@ -49,6 +49,7 @@ function Copyright(props) {
 }
 
 export const Login_comp =  () => {
+
   const[email, setEmail]=React.useState('')
   const[password, setPassword]=React.useState('')
   const[leyendaEmail, setLeyendaEmail]=React.useState('')
@@ -57,9 +58,19 @@ export const Login_comp =  () => {
   const[errorPassword, setErrorPassword]=React.useState(false)
   
 
-  const {dispatch} = useContext(AuthContext); 
-  // console.log(user)
+  const {dispatch, user} = useContext(AuthContext); 
   let navigate = useNavigate();
+  if(user.logged){
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Bienvenido 🥰!',
+      showConfirmButton: false,
+      timer: 2000
+    });
+    return <Navigate to='/catalogo' />
+
+    }
 
   const validate = (value) => {
   
@@ -149,19 +160,18 @@ if(errorEmail || errorPassword){
       
     });
 
-    setTimeout(function(){
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Bienvenido 🥰!',
-        showConfirmButton: false,
-        timer: 1500
-      })
-    }, 3000);
+        if(user.logged) {
+          // Swal.fire({
+          //   position: 'center',
+          //   icon: 'success',
+          //   title: 'Bienvenido 🥰!',
+          //   showConfirmButton: false,
+          //   timer: 1500
+          // });
+          setTimeout(navigate('/catalogo'),3000)
+           
+        }
 
-      setTimeout(function(){
-        navigate('/catalogo') 
-      }, 4500);
 
   };
 

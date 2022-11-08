@@ -6,6 +6,8 @@ import React from 'react'
 import { Typography } from "@mui/material";
 import {getAuth, signOut} from 'firebase/auth';
 import firebaseApp from '../credenciales';
+import Swal from 'sweetalert2'
+
 const auth= getAuth(firebaseApp);
 
 function handleLogOut() {
@@ -17,7 +19,14 @@ function handleLogOut() {
         e.preventDefault();
         dispatch({ type: type.logout})
         signOut(auth)
-        localStorage.setItem("cart", [])
+        localStorage.setItem("cart", []);
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Hasta luego',
+            showConfirmButton: false,
+            timer: 1500
+          });
         navigate('/catalogo', { 
             replace: true
         })

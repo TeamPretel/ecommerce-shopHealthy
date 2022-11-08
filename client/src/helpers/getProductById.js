@@ -4,5 +4,5 @@ export const getProductById = async(id)=>{
 
     const product = await (await fetch(url)).json();
     const result = {...product, img: String(product.img.slice(26))}
-    return result;
+    return product;
 }

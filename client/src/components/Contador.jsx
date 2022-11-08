@@ -2,22 +2,33 @@ import { Button, Grid, TextField, Typography, Box} from "@mui/material";
 import { useState } from "react"
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import InputAdornment from '@mui/material/InputAdornment';
+import {useDispatch} from 'react-redux';
+import {TYPES} from '../actions/ShoppingCartActions.js'
+import { useEffect } from "react";
 
-export const Contador = () => {
+export const Contador = ({defaultValue, id, maxValue}) => {
 
-    const [count, setCount] = useState(1);
+    const dispatch = useDispatch()
+    const [count, setCount] = useState(defaultValue || 1 );
+
     const handleChange = e =>{
-        console.log(e.target.value)
-        if(e.target.value >=0)setCount(e.target.value)
+        if(e.target.value >=0 && e.target.value <= maxValue )setCount(e.target.value)
+
     }
+
+    useEffect( () => {
+        dispatch({type: 'CUSTOM_ADD', payload:{quantity: count, id:id }})
+        dispatch({type: TYPES.TOTAL_AMOUNT})
+    }, [count, dispatch])
+    
+    
+
   return (
     <Box sx={{width:'200px'}} >
     
     <Grid container spacing={0} x={{justifyContent:'center', alingItems:'center',}} >
         <Grid item xs={4} sx={{justifyContent:'center'}}>
-            <Button onClick={() => (parseInt(count) > 1) && setCount(parseInt(count) - 1)} sx={{textAlign:'center'}} >
+            <Button onClick={() => (parseInt(count) > 1 ) && setCount(parseInt(count) - 1)} sx={{textAlign:'center'}} >
             <RemoveIcon/>
             </Button>
         </Grid>
@@ -28,12 +39,13 @@ export const Contador = () => {
                 id="filled-hidden-label-small"
                 variant="outlined"
                 size="small"
+
                 placeholder='0'
                 value={count}
                 InputProps={{
                     // endAdornment: <InputAdornment position="start">u.</InputAdornment>,
                     inputProps: { 
-                        max: 100, min: 0,
+                        max: 100, min: 1,
                         
                     },
                     sx: {
@@ -49,13 +61,10 @@ export const Contador = () => {
             
         </Grid>
         <Grid item xs={4}>
-            <Button onClick={() => setCount(parseInt(count) + 1)} sx={{textAlign:'center'}}>
+            <Button onClick={() => {if (parseInt(count)<maxValue) setCount(parseInt(count) + 1); else if(!count) setCount(1) }} sx={{textAlign:'center'}}>
             <AddIcon/>
             </Button>
         </Grid>
-        <Button variant="outlined" sx={{margin:"15px auto",width:'300px'}} startIcon={<AddShoppingCartIcon />}>
-            <Typography sx={{fontSize:13.5}} >Agregar al carrito</Typography>
-        </Button>
     </Grid>
     </Box>
   )

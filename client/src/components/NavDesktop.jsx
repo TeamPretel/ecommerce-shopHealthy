@@ -4,6 +4,7 @@ import { Link as RouterLink } from 'react-router-dom'
 import { Filters } from './Filters'
 import logo from '../assets/logo.png';
 import { orderAsc, orderDesc } from '../actions/order';
+import CachedIcon from '@mui/icons-material/Cached';
 
 
 export const NavDesktop = () => {
@@ -63,6 +64,14 @@ export const NavDesktop = () => {
             </Box>
             ) )
           }
+      <IconButton
+        onClick={()=> { dispatch({type:'RESET_CATALOG'}); }}
+        sx={{  my:2, color: 'white', '&:hover':{color:'#485446'}  }}
+
+      >
+        <CachedIcon />
+
+      </IconButton>
       <Button
         onClick={handleCloseNavMenu}
         sx={{  my:2, color: 'white', '&:hover':{color:'#485446'}  }}

@@ -1,5 +1,5 @@
 import Search from "@mui/icons-material/Search";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "../auth/ProtectRoutes";
 import { NavBar } from "../components/NavBar";
 import  {DashBoardApp}  from '../dashboard/DashBoardApp';
@@ -34,11 +34,13 @@ export const RouterApp = () => {
         <Route element={<ProtectedRoute isAllowed={user.logged && user.isAdmin} />} >
           <Route path="/admin/*" element={<RouterDashBoard />} />
         </Route>
+        <Route path="/" element={<Navigate to='/catalogo' />} />
         <Route path="/catalogo/*" element={<CatalogoRouter />} />
         <Route path="/acceso" element={<Login />} />
         <Route path="/contacto" element={<Contact />} />
         <Route path="/registro" element={<Register />} />
         <Route path="/producto" element={<CrearProducto />} />
+        <Route path="/no_encontrado" element={<NotFound404/>}/>
         <Route path="/*" element={<NotFound404 />} />
       </Routes>
     </>

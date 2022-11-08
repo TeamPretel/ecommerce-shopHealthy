@@ -8,7 +8,7 @@ import { useDispatch, } from 'react-redux';
 import {TYPES} from '../actions/ShoppingCartActions'
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 
-const CarritoCart = ({ imgCard, name, price, quantity, id }) => {
+const CarritoCart = ({ imgCard, name, price, quantity, id, stock }) => {
   
   const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ const CarritoCart = ({ imgCard, name, price, quantity, id }) => {
     }
 }
   const addFromCart = ()=>{
-    dispatch({type: TYPES.ADD_TO_CART, payload: {id:id}})
+    if (quantity < stock ) dispatch({type: TYPES.ADD_TO_CART, payload: {id:id}})
 }
 
 

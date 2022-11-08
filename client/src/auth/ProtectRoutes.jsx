@@ -5,9 +5,9 @@ export const ProtectedRoute = ({
   redirectTo = "/catalogo",
   children,
 }) => {
-  if (!isAllowed) {
-    return <Navigate to={redirectTo} replace />;
-  }
+  // if (!isAllowed) {
+    // return <Navigate to={redirectTo} replace />;
+  // }
 
   return children ? children : <Outlet />;
 };

@@ -3,27 +3,43 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { Box, Button, Skeleton } from '@mui/material';
+import { Box, Button, Skeleton,} from '@mui/material';
 import { RatingProduct } from './RatingProduct';
 import {Link as RouterLink} from 'react-router-dom'
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import {useDispatch, useSelector} from 'react-redux';
 import { TYPES } from '../actions/ShoppingCartActions'
+import Label from '../dashboard/components/label'
 
 
-export const ProductCard = ({imgCard, prodName, prodPrice,id})=> {
+export const ProductCard = ({imgCard, prodName, prodPrice,id, stock})=> {
 
   const {allProducts, cart} = useSelector( s => s.catalogReducer)
   const dispatch = useDispatch();
 
   const hadleAddCart = e =>{
-      e.preventDefault();
-      dispatch({type: TYPES.ADD_TO_CART, payload: {id:id, precio:prodPrice}})
+      
+      e.preventDefault(); 
+      if(!cart.length || !cart.find(el => el.id == parseInt(id) ) || cart.find(el => el.id == parseInt(id) ).quantity < stock) dispatch({type: TYPES.ADD_TO_CART, payload: {id:id, precio:prodPrice}})
+      console.log(cart.find(el => el.id == parseInt(id) ))
   }
   
   return (
-    <Card sx={{ width: 345,  boxShadow:15 }}  >
+    <Card sx={{ width: 345,  boxShadow:15, pt:4 }}  >
       <Box component={RouterLink} to={`/catalogo/${id}`} >
+        {stock < 5 && <Label
+          variant="filled"
+          color='error'
+          sx={{
+            zIndex: 9,
+            top: 16,
+            right: 16,
+            position: 'absolute',
+            
+          }}
+        >
+          {`Apurate, queda solo ${stock} !`}
+        </Label>}
           {<CardMedia
             component="img"
             height="194"

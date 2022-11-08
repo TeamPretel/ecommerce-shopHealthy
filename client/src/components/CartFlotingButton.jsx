@@ -79,7 +79,7 @@ export const CartFlotingButton = ()=> {
             cart.map((item, index) => {
             return <div key={index} >
             <ListItem  disablePadding>
-              <CarritoCart id={item.id} imgCard={item.img} name={item.nombre} price={item.precio} quantity={item.quantity}/>
+              <CarritoCart stock={item.stock} id={item.id} imgCard={item.img} name={item.nombre} price={item.precio} quantity={item.quantity}/>
             </ListItem>
             {/* <Divider sx={{border:'1px solid black'}}/> */}
             </div>
@@ -118,7 +118,7 @@ export const CartFlotingButton = ()=> {
              },
             }}
           />
-          <Box sx={{position: 'fixed', bottom: 30, right: 30, overflowX:'hidden',}} >
+          <Box sx={{position: 'fixed', bottom: 30, right: 30, zIndex:800}} >
             <Fab
               color="white"
               aria-label="add"

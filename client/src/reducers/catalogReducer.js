@@ -151,6 +151,7 @@ export const catalogReducer = (state = initialState, action) => {
       let newItem = state.allProducts.find((product) => product.id === action.payload.id);
       // console.log(newItem, 'En el reducer.')
       let itemInCart = state.cart.find((item) => item.id === newItem.id);
+
       return itemInCart
         ? {
             ...state,
@@ -164,6 +165,16 @@ export const catalogReducer = (state = initialState, action) => {
           };
     }
 
+    case 'CUSTOM_ADD':{
+      let newItem = state.allProducts.find((product) => product.id === action.payload.id);
+      // console.log(newItem, 'En el reducer.')
+      // let itemInCart = state.cart.find((item) => item.id === newItem.id);
+
+      return{
+        ...state,
+        cart: state.cart.map((item) => (item.id === newItem.id ? { ...item, quantity: action.payload.quantity } : item)),
+      }
+    }
     case TYPES.REMOVE_ONE_FROM_CART: {
       let itemToDelete = state.cart.find((item) => item.id === action.payload);
 

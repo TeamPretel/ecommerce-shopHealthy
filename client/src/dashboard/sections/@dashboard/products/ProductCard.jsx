@@ -47,7 +47,7 @@ export default function ShopProductCard({ product }) {
             {'inactivo'}
           </Label>}
         
-        <StyledProductImg alt={nombre} src={`https://dkndrd.com/pf-healthyShop/${img}`} />
+        <StyledProductImg alt={nombre} src={`https://res.cloudinary.com/dw8jw0zhx/image/upload/v1667676017/healthy_shop_default/${img}`} />
       </Box>
       <Stack spacing={2} sx={{ p: 3 }}>
         {/* <Link color="inherit" underline="hover"> */}

@@ -100,12 +100,12 @@ export default function EditarProducto() {
     console.log('console log data del onsubmit',data);
                                                     //nombre
     //nombre, precio, descripcion, imagen, stock, marcaId, activo */
-    console.log(data)
-
+    
     let dataToPut = {...data}
-    if (image) dataToPut = {...data, imagen: image.slice(83) }
+    if (image) dataToPut = {...data, imagen: image.slice(83), precio: parseInt(precio) }
+    console.log(dataToPut)
     dispatch(editarProducto(dataToPut, id))
-     
+    navigate('/admin/dashboard/products')
 
   }
 
@@ -162,7 +162,7 @@ export default function EditarProducto() {
             <PhotoCamera fontSize='large'/>
           </IconButton>
                 
-        {!load? <StyledProductImg alt={nombre} src={image || `https://dkndrd.com/pf-healthyShop/${img}`} />: <Skeleton sx={{zIndex:100, height:"140%", width:"80%", top:-60, position: 'absolute',}} />}
+        {!load? <StyledProductImg alt={nombre} src={image || `https://res.cloudinary.com/dw8jw0zhx/image/upload/v1667676017/healthy_shop_default/${img}`} />: <Skeleton sx={{zIndex:100, height:"140%", width:"80%", top:-60, position: 'absolute',}} />}
       </Box>
         <form onSubmit={handleSubmit(d=>onSubmit(d))}>
         <Stack spacing={1} sx={{m:2}} >
@@ -275,8 +275,8 @@ export default function EditarProducto() {
                       
                       )}
                 />
-                {errors?.stock?.type === 'required' &&  <Alert sx={{height:'40px', p:0, mb:2}} severity="error">La categoria 1 es requerida</Alert>}
-                {errors?.stock?.type === 'length' &&  <Alert sx={{height:'40px', p:0, mb:2}} severity="error">Maximo 30 caracteres </Alert>}
+                {errors?.categoria?.type === 'required' &&  <Alert sx={{height:'40px', p:0, mb:2}} severity="error">La categoria 1 es requerida</Alert>}
+                {errors?.categoria?.type === 'length' &&  <Alert sx={{height:'40px', p:0, mb:2}} severity="error">Maximo 30 caracteres </Alert>}
                 
                 <Controller 
                     name="categoriaDos"
@@ -307,8 +307,9 @@ export default function EditarProducto() {
                     <Controller
                         name="activo"
                         control={control}
-                        defaultValue={true}
-                        render={({ field }) =><Switch {...field} value={activo} checked={check} />}
+                        defaultValue={!!activo}
+                        // checked={check}
+                        render={({ field }) =><Checkbox {...field} />}
                         
                     />
 

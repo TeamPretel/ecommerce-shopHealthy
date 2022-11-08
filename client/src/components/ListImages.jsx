@@ -13,6 +13,7 @@ export const ListImages = ({data})=> {
                   prodName={el.nombre} 
                   prodPrice={el.precio} 
                   id={el.id} 
+                  stock = {el.stock}
                 />
             </Grid >
         ))}

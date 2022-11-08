@@ -15,16 +15,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../helpers/getProductById";
+import Page404 from "../dashboard/pages/Page404";
+import NotFound404 from "../pages/NotFound404";
+import Producto404 from "../pages/Producto404";
 
 
 export const ProductDetail_comp = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
+  const [error, setError] = useState(null)
 
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.catalogReducer);
-
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getProduct = async () => {
@@ -34,6 +37,7 @@ export const ProductDetail_comp = () => {
         setProduct(productAux);
       } catch (error) {
         console.log("cayo el bendito back otra vez!");
+        setError(true)
       }
       return dispatch({ type: "SET_ISLOADING_FALSE" });
     };
@@ -42,6 +46,7 @@ export const ProductDetail_comp = () => {
     
   const { nombre, precio, img, stock, descripcion } = product;
   
+  if (error) return <Producto404 />
 
   return (
   <Box sx={{alignItems:'center', justifyContent:'center', display: 'flex', }}>
