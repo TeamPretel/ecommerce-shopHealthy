@@ -29,9 +29,9 @@ const {items, payer} = req.body
         .create(preference)
         .then(function (response) {
       console.log(response.body)// En esta instancia deberás asignar el valor dentro de response.body.id por el ID de preferencia solicitado en el siguiente paso
-      // res.redirect(response.body.init_point)
+      res.redirect(response.body.init_point)
         
-        res.json(response.body) //  direccion de ORDEN A PAGAR...
+       //res.json(response.body) //  direccion de ORDEN A PAGAR...
         })
         .catch(function (error) {
           console.log(error);

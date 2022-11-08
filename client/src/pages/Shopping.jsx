@@ -10,12 +10,13 @@ import { Footer_comp } from '../components/Footer';
 import { Grid, Typography, Box, Container, Stack, Button, CardMedia, Skeleton } from '@mui/material';
 import WarningIcon from '@mui/icons-material/Warning';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { initProducts } from '../actions/getInitProducts';
 import { fCurrency } from '../dashboard/utils/formatNumber';
 import { TYPES } from '../actions/ShoppingCartActions';
+import { payMercadoPago } from '../actions/payCart';
 // const TAX_RATE = 0.07;
 
 function ccyFormat(num) {
@@ -26,7 +27,28 @@ function priceRow(qty, unit) {
   return qty * unit;
 }
 
-
+let payInfo =  {
+  "items": [
+    {
+      "id": "1234",
+      "title": "Alfajor de milanesa de soja",
+      "description": "Ya probaste el chiquito ...ahora proba el triple sabor",
+      "category_id": "1",
+      "quantity": 3,
+      "currency_id": "ARS",
+      "unit_price": 5000.00
+    }
+  ],
+  "payer": {
+    "name": "Chirango WachiNigth",
+    "surname": "El chambo",
+    "email": "elchapo@gmail.com",
+    "identification": {
+      "type": "DNI",
+      "number": "12345678"
+    }
+  }
+}
 
 // const invoiceSubtotal = subtotal(rows);
 // // const invoiceTaxes = TAX_RATE * invoiceSubtotal;
@@ -42,12 +64,19 @@ export const Shopping = ()=> {
     dispatch(initProducts())
   }, [dispatch]);
 
-  const {cart, isLoading, subtotal} = useSelector( s=>s.catalogReducer )
-
+  const {cart, isLoading, subtotal,cartInfo} = useSelector( s=>s.catalogReducer )
+ console.log(cartInfo, 'SHOPINNNNNN')
   useEffect(() => {
     dispatch({type:TYPES.TOTAL_AMOUNT})
   }, [cart, dispatch])
   
+  const handlersubmitMP=(e)=>{
+    e.preventDefault()
+    dispatch(payMercadoPago(payInfo))
+    console.log(cartInfo, 'estamos en el handler')
+    window.open(`${cartInfo.init_point}`, '_blank').then(r=>r.navigate('/catalogo'))
+    
+  }
 
   return (
     <>
@@ -138,7 +167,8 @@ export const Shopping = ()=> {
 
 
       </Container>
-    
+      <a href={`${cartInfo.init_point}`} target='_blank'>pagar</a>
+    <button onClick={handlersubmitMP}>iniciar pago</button>
     <Footer_comp/>
     </>
   );

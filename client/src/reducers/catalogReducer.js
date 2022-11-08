@@ -12,7 +12,9 @@ const initialState = {
   categName: ['TENTACION SALUDABLE', 'ALACENA SALUDABLE', 'ESTILO DE VIDA', 'BEBIDAS'],
   setBanner: true,
   cart: [],
-  subtotal: 0
+  subtotal: 0,
+  cartInfo: {}
+  
 };
 export const catalogReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -135,6 +137,14 @@ export const catalogReducer = (state = initialState, action) => {
         return{
           ...state,
         };
+      
+      case 'PAY_MERCADO_PAGO':
+        console.log(action.payload,'estamos en el rediuzer');
+        return {
+          ...state,
+         cartInfo:action.payload
+         
+        }
 
 
     case TYPES.ADD_TO_CART: {
