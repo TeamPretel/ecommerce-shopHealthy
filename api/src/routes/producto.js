@@ -1,3 +1,4 @@
+/* eslint-disable */
 const { Router } = require("express");
 const { Producto, Marca, Categoria } = require("../db");
 // const {API_KEY} = process.env;

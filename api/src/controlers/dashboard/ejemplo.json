@@ -1,0 +1,23 @@
+{
+  "uid": "zljdkpyexIRfNpNhtClMtsILxl63",
+  "email": "dukintosh@gmail.com",
+  "emailVerified": true,
+  "displayName": "Javier Gutiérrez",
+  "photoURL": "https://lh3.googleusercontent.com/a/ALm5wu2gEBRBqExIQTDWweXu8nNetUSbyKlNHMdXpuMSlg=s96-c",
+  "disabled": false,
+  "metadata": {
+    "lastSignInTime": "Fri, 04 Nov 2022 23:44:27 GMT",
+    "creationTime": "Sat, 22 Oct 2022 05:52:37 GMT",
+    "lastRefreshTime": "Fri, 04 Nov 2022 23:44:27 GMT"
+  },
+  "tokensValidAfterTime": "Sat, 22 Oct 2022 05:52:37 GMT",
+  "providerData": [
+    {
+      "uid": "117976970812920563669",
+      "displayName": "Javier Gutiérrez",
+      "email": "dukintosh@gmail.com",
+      "photoURL": "https://lh3.googleusercontent.com/a/ALm5wu2gEBRBqExIQTDWweXu8nNetUSbyKlNHMdXpuMSlg=s96-c",
+      "providerId": "google.com"
+    }
+  ]
+}
