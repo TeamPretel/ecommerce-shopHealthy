@@ -22,26 +22,54 @@ import { MercadoPagoCart } from '../components/MercadoPagoCart';
 import ShieldIcon from '@mui/icons-material/Shield';
 import { Preferencias_comp } from '../components/Preferencias';
 import { FormCarrito } from '../components/FormCarrito';
+import { PaidMercadoPago } from '../actions/pagoMercadoPago';
 
+let info =  {
+  "items": [
+    {
+      "id": "1234",
+      "title": "Alfajor de milanesa de soja",
+      "description": "Ya probaste el chiquito ...ahora proba el triple sabor",
+      "category_id": "1",
+      "quantity": 3,
+      "currency_id": "ARS",
+      "unit_price": 5000.00
+    }
+  ],
+  "payer": {
+    "name": "Chirango WachiNigth",
+    "surname": "El chambo",
+    "email": "elchapo@gmail.com",
+    "identification": {
+      "type": "DNI",
+      "number": "12345678"
+    }
+  }
+}
 
 export const Shopping = ()=> {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  
   useEffect(() => {
     dispatch(initProducts())
   }, [dispatch]);
   
-  const {cart, isLoading, subtotal} = useSelector( s=>s.catalogReducer )
+  const {cart, isLoading, subtotal, cartInfo} = useSelector( s=>s.catalogReducer )
   useEffect(() => {
     dispatch({type:TYPES.TOTAL_AMOUNT})
   }, [cart, dispatch])
   
-
   const onSubmit = (e,d)=>{
-
+    console.log(info, 'INFO DE LA ORDEN')
+    e.preventDefault()
+    dispatch(PaidMercadoPago(info))
+    
+    setTimeout(function(){
+      window.open(`${cartInfo.init_point}`, '_blank')
+  }, 2000);
+  
   }
 
   return (
@@ -141,7 +169,7 @@ export const Shopping = ()=> {
             </Stack>
         </Grid>
         <Grid item xs={8} >
-          <FormCarrito onSubmit={onSubmit}/>
+          <FormCarrito />
         </Grid>
       </Grid>
 
