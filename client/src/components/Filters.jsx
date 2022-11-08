@@ -64,6 +64,7 @@ export const Filters = ({categTitle, handleCloseNavMenu}) => {
       const handleChange = (event) => {
         dispatch(filterByCateg(event.target.innerText));
         navigate(`/catalogo`);
+        handleCloseUserMenu()
       };
       const handleChangeMultiple = e => {
 

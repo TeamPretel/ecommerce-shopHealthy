@@ -39,7 +39,7 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    if (_DATA.currentPage == 0) {_DATA.setCurrentPage(1); console.log(page) }
+    if (_DATA.currentPage == 0) {_DATA.setCurrentPage(1);}
     if(page < 1) setPage(1)
     if(page > count ) {setPage(1);_DATA.jump(1);}
   }, [_DATA.currentPage, _DATA.setCurrentPage, page, setPage, count])

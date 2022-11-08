@@ -4,7 +4,6 @@ import { orderAsc, orderDesc } from "./order";
 export const filterByCateg = categName => (dispatch, getState) =>{
     const {allProducts} = getState().catalogReducer;
     const filtered = allProducts.filter(el => el.categoria.find(ele => ele.nombre.toLowerCase() === categName.toLowerCase() ));
-    console.log(filtered)
     dispatch( {type: 'FILTER_BY_CATEGORY', payload: {data:filtered, cat: categName}});
 }
 
@@ -21,7 +20,7 @@ export const addNestedFilter = categName => (dispatch, getState) =>{
     let map ={}
     let maped = filtered.filter(el => map[el.id] ? false : map[el.id] = true);
     
-    dispatch( {type: 'ADD_NESTED_FILTER', payload: { data:maped, cat: `${label} - ${categName}` } });
+    dispatch( {type: 'ADD_NESTED_FILTER', payload: { data:maped, cat: categName} });
     if (order){
         dispatch(orderAsc(orderKey))
     }else dispatch(orderDesc(orderKey))
