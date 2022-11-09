@@ -26,7 +26,7 @@ const StyledProductImg = styled('img')({
 // };
 
 export default function ShopProductCard({ product }) {
-  const { img, nombre, precio,id, activo} = product;
+  const { img, nombre, precio,id, activo, stock} = product;
   const navigate = useNavigate()
 
   return (
@@ -44,8 +44,21 @@ export default function ShopProductCard({ product }) {
               textTransform: 'uppercase',
             }}
           >
-            {'inactivo'}
+            inactivo
           </Label>}
+          <Label
+            variant="filled"
+            color='info'
+            sx={{
+              zIndex: 9,
+              top: 16,
+              let: -6,
+              ml:1.5,
+              position: 'absolute',
+            }}
+          >
+            {`x${stock}`}
+          </Label>
         
         <StyledProductImg alt={nombre} src={`https://res.cloudinary.com/dw8jw0zhx/image/upload/v1667676017/healthy_shop_default/${img}`} />
       </Box>

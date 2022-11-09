@@ -11,6 +11,7 @@ import { Alert, capitalize, CardMedia, Divider, Grid, Rating, Stack, TextField }
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 
 const drawerBleeding = 10;
@@ -41,11 +42,17 @@ const [value, setValue] = useState(0);
 const { handleSubmit, formState:{errors}, control, } = useForm();
 
 const onSubmit = async (data)=>{
-  let newData = {...data, puntaje: parseInt(data.puntaje),  productoId:parseInt(id), usuarioId:2}
-  console.log(newData)
-  let json = await axios.put(`https://henryhealthy.shop/tresmiluno/review/crear`,newData);
-  console.log(json, 'id q devuelve el back')
-
+  let newData = {...data, puntaje: parseInt(data.puntaje),  productoId:id, usuarioId:30700680}
+  let json = await axios.post(`https://henryhealthy.shop/tresmiluno/review/crear`,newData);
+  setOpen(false);
+  Swal.fire({
+    position: 'center',
+    icon: 'success',
+    title: 'Tu comentario fue registrado! gracias por dar tu opinión',
+    showConfirmButton: false,
+    timer: 2000
+  });
+  
 }
 
   return (
@@ -168,14 +175,16 @@ const onSubmit = async (data)=>{
                 <Controller 
                     name="puntaje"
                     control={control}
-                    defaultValue={value}
+                    defaultValue={1}
                     rules={{ required: true }}
-                    render={({ field }) => <Rating 
-                                                sx={{m:'10px auto'}}
-                                                name="simple-controlled"
-                                                {...field}
-                                        
-                                            />
+                    render={(props) => <Rating 
+                                          sx={{alignItems:'center',m:'0 auto'}} 
+                                          name='puntaje' 
+                                          onChange={props.field.onChange} 
+                                          value={parseInt(props.field.value)}
+                                          // onChange={e=>console.log(props)}
+  
+                                        />
 
                   }
                   />

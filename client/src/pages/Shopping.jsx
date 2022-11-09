@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Footer_comp } from '../components/Footer';
-import { Grid, Typography, Box, Container, Stack, Button, CardMedia, Skeleton } from '@mui/material';
+import { Grid, Typography, Box, Container, Stack, Button, IconButton, Skeleton, capitalize } from '@mui/material';
 import WarningIcon from '@mui/icons-material/Warning';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { redirect, useNavigate } from 'react-router-dom';
@@ -25,6 +25,7 @@ import { FormCarrito } from '../components/FormCarrito';
 import { useForm, Controller } from 'react-hook-form';
 import { PaidMercadoPago } from '../actions/pagoMercadoPago';
 import { PaiadTable } from '../components/PaidTable';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 function ccyFormat(num) {
   return `${num.toFixed(2)}`;
@@ -66,6 +67,15 @@ export const Shopping = ()=> {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { handleSubmit, formState:{errors}, control, } = useForm();
+
+  const delFromCart = (id,all=false)=>{
+    if(all){
+        dispatch({type:TYPES.REMOVE_ALL_FROM_CART, payload:id})
+    }else{
+        dispatch({type:TYPES.REMOVE_ONE_FROM_CART, payload:id})
+    }
+}
+
   useEffect(() => {
     dispatch(initProducts())
   }, [dispatch]);
@@ -123,6 +133,8 @@ useEffect(() => {
   }
 }, [dispatch, cartInfo]);
 
+
+
   
   return (
     <>
@@ -134,11 +146,13 @@ useEffect(() => {
 
       </Box>
       <Grid container spacing={2} >
-        <Grid item sx={{ display:{ xs:'none', md:'flex'} }} xs={12} >
+        <Grid item md={1}></Grid>
+        <Grid item sx={{ display:{ xs:'none', md:'flex'}, justifyContent:'center', alingItems:'center' }} xs={10} >
           <TableContainer component={Paper}>
             <Table aria-label="spanning table">
               <TableHead  >
                 <TableRow >
+                  <TableCell align="right" sx={{textAlign:'right',bgcolor:t=>t.palette.primary.main, color:'white'}} ></TableCell>
                   <TableCell sx={{textAlign:'right',bgcolor:t=>t.palette.primary.main, color:'white'}}>Desc</TableCell>
                   <TableCell align="right" sx={{textAlign:'center',bgcolor:t=>t.palette.primary.main, color:'white'}} ></TableCell>
                   <TableCell align="right" sx={{textAlign:'center',bgcolor:t=>t.palette.primary.main, color:'white'}} >Unidades</TableCell>
@@ -177,12 +191,17 @@ useEffect(() => {
                       :
                   cart.map((row) => (
                   <TableRow key={ row.id }>
-                    <TableCell>{ row.nombre }</TableCell>
-                    <TableCell sx={{maxHeight:'100px'}} > <img width="100px" src={`https://res.cloudinary.com/dw8jw0zhx/image/upload/v1667676017/healthy_shop_default/${row.img}`} alt={ row.nombre } /></TableCell>
-                    <TableCell align="right" sx={{textAlign:'center'}} > 
+                    <TableCell>
+                      <IconButton onClick={()=>delFromCart(row.id, true) } sx={{m:0, p:0, color:t=>t.palette.error.main}} >
+                          <DeleteRoundedIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell>{ capitalize(row.nombre) }</TableCell>
+                    <TableCell sx={{maxHeight:'100px', px:0,}} > <img width="100px" src={`https://res.cloudinary.com/dw8jw0zhx/image/upload/v1667676017/healthy_shop_default/${row.img}`} alt={ row.nombre } /></TableCell>
+                    <TableCell align="center" sx={{textAlign:'center', m:0, px:0}} > 
                                                 <Stack sx={{p:0,}} >
                                                   <Contador defaultValue={row.quantity} id={row.id} maxValue={row.stock} />
-                                                  <Typography variant='body2' sx={{p:0, m:0, opacity:'60%' }} >{`En stock: ${row.stock}` }</Typography> 
+                                                  <Typography variant='body2' sx={{ml:-2, opacity:'60%', textAlign:'center' }} >{`En stock: ${row.stock}` }</Typography> 
                                                 </Stack>
                     </TableCell>
                     <TableCell align="right" sx={{textAlign:'center'}} >{fCurrency(row.precio)}</TableCell>
@@ -193,7 +212,7 @@ useEffect(() => {
 
                 <TableRow sx={{bgcolor:t=>t.palette.primary.light}} >
                   <TableCell rowSpan={4} />
-                  <TableCell colSpan={3}>Total</TableCell>
+                  <TableCell colSpan={4 }>Total</TableCell>
                   <TableCell align="right" sx={{textAlign:'center'}} >{fCurrency(subtotal) }</TableCell>
                 </TableRow>
               </TableBody>

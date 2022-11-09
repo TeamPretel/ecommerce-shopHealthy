@@ -69,7 +69,6 @@ const {nombre, apellido, email, telefono, mensaje}=req.body;
 router.post("/crear",check('nombre').exists().not().isEmpty(),
                       check('apellido').exists().not().isEmpty(),
                       check('direccion').exists().not().isEmpty(),
-                      check('num_dir').exists().isNumeric(),
                       check('codPostal').exists().isNumeric().custom((value,{req})=>{
                         if(value < 1001 || value > 9431){
                           throw new Error('UPSSS valor no valido')
@@ -77,15 +76,8 @@ router.post("/crear",check('nombre').exists().not().isEmpty(),
                         return true
                       }),
                       check('telefono').exists().isNumeric(),
-                      check('mail').exists().isEmail().normalizeEmail(),
+                      check('mail').exists(),
                       check('isAdmin').exists().isBoolean(),
-                      check('edad').exists().isNumeric().custom((value,{req})=>{
-                        if(value < 18 ){
-                          throw new Error('Debe ser mayor de edad, 😥')
-                        }
-                        return true
-                      }),
-                      check('genero').exists().not().isEmpty().isLength({min:5,max:6}),
                       (req,res,next)=>{
                         validateResult(req,res,next)
                       }
@@ -93,18 +85,15 @@ router.post("/crear",check('nombre').exists().not().isEmpty(),
 , async (req, res) => {
     try {
       const {
-        id,nombre,apellido,direccion,num_dir,codPostal,telefono,mail,isAdmin,edad,genero} = req.body;
+        id,nombre,apellido,direccion,codPostal,telefono,mail,isAdmin} = req.body;
       
 
       
       const usuario = await Usuario.create({
         id: id,
         nombre: nombre,
-        apellido: apellido,
-        edad:edad,
-        genero:genero,
+        apellido: apellido,  
         direccion: direccion,
-        num_dir: num_dir,
         codPostal: codPostal,
         telefono: telefono,
         mail: mail,

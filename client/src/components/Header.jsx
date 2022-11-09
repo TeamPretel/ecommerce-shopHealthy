@@ -5,15 +5,20 @@ import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { Link } from '@mui/material';
+import { IconButton, Link } from '@mui/material';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { useNavigate } from 'react-router-dom';
 
 export const Header_comp = (props) => {
+  const navigate = useNavigate()
   return (
     <React.Fragment>
-      <CssBaseline />
 
       <AppBar>
         <Toolbar>
+          <IconButton onClick={()=>navigate(-1)} >
+            <ChevronLeftIcon />
+          </IconButton>
           <Link href="/catalogo" color="inherit" underline="none">
             <Typography variant="h6" component="div">
               Healty Food

@@ -3,9 +3,7 @@ import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 
-export const RatingProduct = ()=> {
-  const [value, setValue] = React.useState(0);
-
+export const RatingProduct = ({value})=> {
   return (
     <Box
       sx={{

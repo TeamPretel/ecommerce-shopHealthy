@@ -1,60 +1,16 @@
-import { useNavigate } from 'react-router-dom'
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { useForm, Controller } from 'react-hook-form';
-import Swal from 'sweetalert2'
 import { Alert } from '@mui/material';
-import axios from 'axios';
 
-export const Preferencias_comp = () => {
-
-  const { handleSubmit, formState:{errors}, control, } = useForm();
-  const navigate = useNavigate();
-
-
-  const onSubmit = async(d)=>{
-    console.log(d)
-    const newData = {...d, codPostal:parseInt(d.codPostal), telefono:parseInt(d.telefono), isAdmin:false}
-    console.log(newData);
-    
-    try {
-      const backMesage = await axios.post('https://henryhealthy.shop/tresmiluno/usuario/crear',newData );
-      console.log(backMesage)
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Registrado con exito 😋!',
-        showConfirmButton: false,
-        timer: 1000
-      })
-      navigate('/catalogo')
-    } catch (error) {
-      Swal.fire({
-        position: 'center',
-        icon: 'error',
-        title: 'DNI ya existe!',
-        showConfirmButton: false,
-        timer: 1000
-      })
-
-    }
-  }
+export const FormularioPreferencias = (  {Controller, control, errors} ) => {
 
   return (
     <>
-      <Container component="main" sx={{ marginTop: '100px', width:'60%', alignItems:'center' }}>
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main', m:'0 auto' }}>
-            <AccountCircleIcon fontSize="large" />
-          </Avatar>
-          <Typography component="h1" variant="h5" sx={{textAlign:'center'}} >
-            Perfil
-          </Typography>
-          <Grid container spacing={3}>
+      <Container sx={{mb:3}}>
+
+        <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
         <Controller 
             name="nombre"
@@ -134,7 +90,6 @@ export const Preferencias_comp = () => {
         </Grid>
         {errors.mail?.type === 'required' &&  <Alert sx={{height:'50px', width:'100%',ml:2 }} severity="error">El email es requerido</Alert>}
         {errors.mail?.type === 'pattern' &&  <Alert sx={{height:'50px',width:'100%' }} severity="error">Ingresa un email valido por favor </Alert>}
-        
         <Grid item xs={6}>
         <Controller 
             name="telefono"
@@ -154,7 +109,29 @@ export const Preferencias_comp = () => {
         </Grid>
         {errors.telefono?.type === 'required' &&  <Alert sx={{height:'50px', width:'100%',ml:2 }} severity="error">El Telefono es requerido</Alert>}
         {errors.telefono?.type === 'pattern' &&  <Alert sx={{height:'50px',width:'100%' }} severity="error">Solo numero por favor</Alert>}
-
+        <Grid item xs={12}>
+        <Controller 
+            name="password"
+            defaultValue={''}
+            control={control}
+            rules={{ required: true, pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,15}$/  }}
+            render={({ field }) => <TextField
+                                        {...field}
+                                        required
+                                        name='password'
+                                        type='password'
+                                        label="Password"
+                                        fullWidth
+                                        autoComplete="given-name"
+                                        variant="standard"
+                                    />}
+                
+        />
+        </Grid>
+        {errors.password?.type === 'required' &&  <Alert sx={{height:'50px', width:'100%',ml:2 }} severity="error">El password es requerido</Alert>}
+        {errors.password?.type === 'pattern' &&  <Alert sx={{height:'50px',width:'100%' }} severity="error">Escribe una clave bien fuerte 💪😉, mas de  8 caracteres, 1 minuscula, 1 mayuscula, 1 número, 1 simbolo</Alert>}
+        
+        
         <Grid item xs={12} sm={6}>
         <Controller 
             name="id"
@@ -198,18 +175,6 @@ export const Preferencias_comp = () => {
         {errors.codPostal?.type === 'pattern' &&  <Alert sx={{ p:0}} severity="error">Solo numeros</Alert>}
 
         </Grid>
-
-      </Grid>
-      <Grid item xs={12} sx={{display:'flex', m:2, alignItems:'center', justifyContent:'center'  }} >
-          <Button
-            sx={{width:'40%'}}
-            variant='contained'
-            type='submit'
-            onClick={handleSubmit(d=>onSubmit(d))}
-            
-          >
-            Guardar
-          </Button>
 
       </Grid>
       </Container>

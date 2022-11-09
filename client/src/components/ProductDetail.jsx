@@ -3,7 +3,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import NotFound from '../assets/notFount.jpg'
 
-import { Box, Button, Divider, Grid, Skeleton,capitalize,TextField, Stack, Rating } from "@mui/material";
+import { Box, Button, Divider, Grid, Skeleton,capitalize,TextField, Stack, Rating, Alert, AlertTitle } from "@mui/material";
 import { RatingProduct } from "./RatingProduct";
 import { Contador } from './Contador';
 
@@ -15,6 +15,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../helpers/getProductById";
+import { getReviewById } from "../helpers/getReviewsById.js";
 import Page404 from "../dashboard/pages/Page404";
 import NotFound404 from "../pages/NotFound404";
 import Producto404 from "../pages/Producto404";
@@ -24,7 +25,11 @@ import {TYPES} from '../actions/ShoppingCartActions.js'
 export const ProductDetail_comp = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
+  const [review, setReview] = useState([])
+  const [reviewLoad, setReviewLoad] = useState(true);
+  const [revErr, setRevErr] = useState(null);
+  const [rating, setRating] = useState(0)
 
   const dispatch = useDispatch();
   const { isLoading,cart } = useSelector((state) => state.catalogReducer);
@@ -37,13 +42,35 @@ export const ProductDetail_comp = () => {
         const productAux = await getProductById(id);
         setProduct(productAux);
       } catch (error) {
-        console.log("cayo el bendito back otra vez!");
         setError(true)
       }
       return dispatch({ type: "SET_ISLOADING_FALSE" });
     };
     getProduct();
   }, [id, dispatch, navigate]);
+
+  useEffect(() => {
+    const getReview = async ()=>{
+      try {
+        const getReview = await getReviewById(id);
+        setReview(getReview);
+      } catch (error) {
+        setRevErr(true)
+      }
+    }
+    getReview()
+  }, [id])
+
+  useEffect(() => {
+    if (review.length){
+      let suma = review.reduce(  (acc, current) => acc + current.puntaje, 0 )
+      console.log(suma)
+      const promedio = Math.round(suma / review.length);
+      setRating(promedio)
+    }
+  }, [review])
+  
+
     
   const { nombre, precio, img, stock, descripcion } = product;
 
@@ -106,7 +133,7 @@ export const ProductDetail_comp = () => {
           </Typography>: <Skeleton height={'65px'}/> 
         }
         <Divider/>
-        <RatingProduct sx={{alignItems: "center"}}/>
+        <RatingProduct value={rating} sx={{alignItems: "center"}}/>
         <Divider/>
         <Typography>
           <CreditCardIcon color="secondary" sx={{ fontSize: 24, ml:{md:2, xs:0} }} /> Aceptamos tarjetas todas las tarjetas.
@@ -118,7 +145,7 @@ export const ProductDetail_comp = () => {
           <DeliveryDiningIcon color="secondary" sx={{ fontSize: 24, ml:{md:2, xs:0} }} /> Lo llevamos a la puerta de tu casa.
         </Typography>
         <Typography>
-          <Inventory2OutlinedIcon color="secondary" sx={{ fontSize: 24, ml:{md:2, xs:0} }} /> {`En stock: ${stock} udds`}
+          <Inventory2OutlinedIcon color="secondary" sx={{ fontSize: 24, ml:{md:2, xs:0} }} /> {`En stock: ${stock} u.`}
         </Typography>
         <Box sx={{display:'flex', justifyContent:'center', alingItems:'center',py:3}}>
           <Button 
@@ -134,49 +161,60 @@ export const ProductDetail_comp = () => {
 
       <Grid item xs={12} >
 
-        <Grid container sx={{boxShadow:15, borderRadius:'8px', my:5 }}>
+        {
+        
+        review.length
+          ?review.map( rev=>(
+
+          <Grid key={rev.id} container sx={{boxShadow:15, borderRadius:'8px',my:2}}>
 
             <Grid item xs={12}  >
-                <Typography variant="body1" sx={{ py:2, pl:3, fontWeight:700, fontSize:'1rem'}} > user:asdas </Typography>
+                <Typography variant="body1" sx={{ py:2, pl:3, fontWeight:700, fontSize:'1rem'}} > {`user: ${rev.usuarioId}`} </Typography>
             </Grid>
 
             <Grid item xs={12} >
                 <Divider variant="middle" color='black' sx={{mb:2}} />
 
             </Grid>
-
-            <Grid item xs={12} md={2} sx={{display:'flex', justifyContent:'center'}} >
-                <CardMedia
-                component="img"
-                image={`https://res.cloudinary.com/dw8jw0zhx/image/upload/v1667676017/healthy_shop_default/DEMETER-EL-PAMPA-ORGANICO-NUECES-PECAN-ORGANICAS-500G.jpg`||<Skeleton height={194}/>}
-                alt={'nombre'}
-                sx={{width:'auto', height:{xs:'130px', md:'190px'} }}
-                />
-
-            </Grid>
-
-            <Grid item xs={12} md={6} sx={{display:'flex',pt:2, justifyContent:'center'}} >
-                <Typography
-                variant='body2'
-                sx={{opacity:'90%'}}
-                >
-                  un reviews de algina persona
-                </Typography>
+            <Grid item xs={12} md={6} sx={{pl:4}} >
+              <Stack spacing={1} sx={{mb:4}}>
+                  <Typography
+                  variant='body2'
+                  sx={{fontWeight:700}}
+                  >
+                    {capitalize(rev.titulo)}
+                  </Typography>
+                  <Typography
+                  variant='body2'
+                  sx={{opacity:'90%'}}
+                  >
+                    {capitalize(rev.comentario)}
+                  </Typography>
+              </Stack>
             </Grid>
 
             <Grid item xs={12} md={4} sx={{alignItems:'center'}} >
-                <Stack spacing={1} sx={{m:'8px 15px', alignContent:'center'}} >
+                <Stack spacing={1} sx={{alignContent:'center'}} >
                     <Rating 
                         sx={{m:'10px auto'}}
                         name="simple-controlled"
-                        value={5}
+                        value={rev.puntaje}
                         readOnly
                 
                     />
                     
                 </Stack>
             </Grid>
-            </Grid>
+
+          </Grid>
+
+          
+        ) )
+        :<Alert severity="info" sx={{my:8}} >
+          <AlertTitle>Comentarios</AlertTitle>
+          Aun no existen comentarios para este producto
+        </Alert>
+      }
 
         </Grid>
   

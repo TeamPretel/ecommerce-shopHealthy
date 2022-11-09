@@ -8,6 +8,7 @@ import { useDispatch, } from 'react-redux';
 import {TYPES} from '../actions/ShoppingCartActions'
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import RemoveIcon from '@mui/icons-material/Remove';
+
 const CarritoCart = ({ imgCard, name, price, quantity, id, stock }) => {
   
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ const CarritoCart = ({ imgCard, name, price, quantity, id, stock }) => {
           <Stack>
             <Typography  sx={{color:'black', fontSize:{xs:'14px',md:'16px'}, fontWeight:900,}}>{capitalize(name)}</Typography>
             <Typography  sx={{color:'black', fontSize:{xs:'13px',md:'14px'},}}>{`${fCurrency(price)} x ${quantity} = ${fCurrency( price * quantity )}`}</Typography>
+            <Typography  sx={{opacity:'90%',color:t=>t.palette.info.main, fontSize:{xs:'12px',md:'13px'},}}>{`Disponible: ${stock}u.`}</Typography>
           </Stack>
         </Grid>
         <Grid item xs={1}  >

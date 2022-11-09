@@ -97,15 +97,10 @@ export default function EditarProducto() {
 
   const onSubmit = (data)=>{
     
-    console.log('console log data del onsubmit',data);
-                                                    //nombre
-    //nombre, precio, descripcion, imagen, stock, marcaId, activo */
-    
     let dataToPut = {...data}
     if (image) dataToPut = {...data, imagen: image.slice(83), precio: parseInt(precio) }
-    console.log(dataToPut)
     dispatch(editarProducto(dataToPut, id))
-    navigate('/admin/dashboard/products')
+    navigate('/admin/dashboard/products', {replace:true})
 
   }
 
