@@ -6,6 +6,8 @@ const router = Router();
 
 router.post("/pago", async (req,res)=>{
 const {items, payer} = req.body
+  console.log('SOY EL BACK..')
+  console.log(req.body)
 
     let preference = {
       "purpose": "wallet_purchase",

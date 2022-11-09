@@ -16,8 +16,16 @@ import { useEffect } from 'react';
 import { initProducts } from '../actions/getInitProducts';
 import { fCurrency } from '../dashboard/utils/formatNumber';
 import { TYPES } from '../actions/ShoppingCartActions';
-import { payMercadoPago } from '../actions/payCart';
-// const TAX_RATE = 0.07;
+import { useState } from 'react';
+import { Contador } from '../components/Contador';
+import { MercadoPagoCart } from '../components/MercadoPagoCart';
+import ShieldIcon from '@mui/icons-material/Shield';
+import { Preferencias_comp } from '../components/Preferencias';
+import { FormCarrito } from '../components/FormCarrito';
+import { useForm, Controller } from 'react-hook-form';
+import { PaidMercadoPago } from '../actions/pagoMercadoPago';
+
+
 
 function ccyFormat(num) {
   return `${num.toFixed(2)}`;
@@ -58,27 +66,53 @@ export const Shopping = ()=> {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-  
+  const { handleSubmit, formState:{errors}, control, } = useForm();
   useEffect(() => {
     dispatch(initProducts())
   }, [dispatch]);
-
-  const {cart, isLoading, subtotal,cartInfo} = useSelector( s=>s.catalogReducer )
- console.log(cartInfo, 'SHOPINNNNNN')
+  
+  const {cart, isLoading, subtotal, cartInfo} = useSelector( s=>s.catalogReducer )
   useEffect(() => {
     dispatch({type:TYPES.TOTAL_AMOUNT})
   }, [cart, dispatch])
   
-  const handlersubmitMP=(e)=>{
-    e.preventDefault()
-    dispatch(payMercadoPago(payInfo))
-    console.log(cartInfo, 'estamos en el handler')
-    window.open(`${cartInfo.init_point}`, '_blank').then(r=>r.navigate('/catalogo'))
-    
-  }
+ 
+  const onSubmit = (data)=>{
+   let newData = {...data, id:parseInt(data.id), codPostal: parseInt(data.codPostal) }
+    // console.log('console log data del onsubmit',newData);
 
-  const onSubmit = (e,d)=>{
+    let itemsToMercado = cart.map( producto=>(
+      {
+          "id": String(producto.id),
+          "title": String(producto.nombre),
+          "description": String(producto.descripcion),
+          "category_id": String(newData.id),
+          "quantity": String(producto.quantity),
+          "currency_id":"ARS",
+          "unit_price": producto.precio
+      }
+
+  ))
+
+        let info =  {
+            "items": itemsToMercado,
+            "payer": {
+              "name": newData.nombre,
+              "surname": newData.apellido,
+              "email": newData.email,
+              "identification": {
+              "type": "DNI",
+              "number": newData.id
+            }
+          }
+        } 
+    console.log( 'DATA QUE SE DESPACHA...') 
+    console.log(info) 
+
+    dispatch(PaidMercadoPago(info))
+    setTimeout(function(){
+      window.open(`${cartInfo.init_point}`, '_blank')
+  }, 2000);
 
   }
 
@@ -164,22 +198,26 @@ export const Shopping = ()=> {
             </Table>
           </TableContainer>
         </Grid>
+        
+        <Grid item xs={4} > <Typography>rellenar</Typography> </Grid>
+
+        <Grid item xs={8} >
+          <FormCarrito errors={errors} control={control} handleSubmit={handleSubmit} onSubmit={handleSubmit} />
+        </Grid>
         <Grid item xs={4} >
             <Stack  spacing={4} sx={{justifyContent:'center', alingItems:'center', display:'flex', }} >
               <MercadoPagoCart />
               <Button
                 startIcon={<ShieldIcon/>}
                 variant='contained'
-                onClick={onSubmit}
+                type='submit'
+                onClick={handleSubmit(d=>onSubmit(d))}
                 
               >
-                {`Total a pagar ${fCurrency(subtotal)} `}
+                {`Pagar ${fCurrency(subtotal)} `}
               </Button>
               <Typography variant='body2' sx={{fontSize:'0.75rem', opacity:'70%'}} > Al confirmar tu compra, te redirigiremos a tu cuenta de Mercado Pago </Typography>
             </Stack>
-        </Grid>
-        <Grid item xs={8} >
-          <FormCarrito onSubmit={onSubmit}/>
         </Grid>
       </Grid>
 

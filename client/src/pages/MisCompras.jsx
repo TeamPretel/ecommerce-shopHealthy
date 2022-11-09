@@ -35,17 +35,17 @@ export const MisCompras = () => {
     products = products.slice(85)
 
   return (
-    <Container >
+    <Container sx={{pb:5}} >
         <Box sx={{ textAlign:'center'}} >
             <Typography variant="h3" sx={{color: t=>t.palette.primary.dark}} > 
-            <ShoppingBagOutlinedIcon sx={{mt:-1,mr:5}}  />
-            MIS COMPRAS
+            <ShoppingBagOutlinedIcon sx={{mt:-1,mr:2}}  />
+            Mis Compras
             </Typography>
         </Box>
         {products.map(el=>(
         
         <div key={el.id}>
-        <Grid container sx={{boxShadow:15, borderRadius:'8px', my:5 }}>
+        <Grid container sx={{boxShadow:15, borderRadius:'8px', my:2, pb:3 }}>
 
             <Grid item xs={6}  >
                 <Typography variant="h5" sx={{ py:2, pl:3}} >Estado: <Typography variant="body1" display='inline' >entregado</Typography>  </Typography>
@@ -59,7 +59,7 @@ export const MisCompras = () => {
 
             </Grid>
 
-            <Grid item xs={2} >
+            <Grid item xs={12} md={2} sx={{display:'flex', alignItems:'center', justifyContent:'center'}} >
                 <CardMedia
                 component="img"
                 height="194"
@@ -70,11 +70,11 @@ export const MisCompras = () => {
 
             </Grid>
 
-            <Grid item xs={6} sx={{m:'auto'}} >
-                <Stack spacing={1} sx={{m:'auto 15px',}} >
-                    <Typography sx={{px:1, fontWeight:700 }} >{el.nombre}</Typography>
-                    <Typography variant="body1" sx={{px:1, opacity:'85%' }} >{ capitalize(el.marca.nombre)}</Typography>
-                    <Typography variant="body1" sx={{px:1, opacity:'85%' }} > { fCurrency(el.precio) } </Typography>
+            <Grid item xs={12} md={6} sx={{m:'auto'}} >
+                <Stack spacing={1} sx={{display:'flex', alignItems:'center', justifyContent:'center'}} >
+                    <Typography sx={{px:1, fontWeight:700 }} >{ capitalize(el.nombre )}</Typography>
+                    <Typography variant="body1" sx={{px:1, opacity:'85%', m:'0 auto' }} >{ capitalize(el.marca.nombre)}</Typography>
+                    <Typography variant="body1" sx={{px:1, opacity:'85%' }} > { ` ${fCurrency(el.precio)} x ${2} ` } </Typography>
                     <Rating 
                         sx={{m:'10px auto'}}
                         name="simple-controlled"
@@ -85,10 +85,10 @@ export const MisCompras = () => {
                 </Stack>
             </Grid>
 
-            <Grid item xs={4} sx={{alignItems:'center'}} >
+            <Grid item xs={12} md={4} sx={{alignItems:'center'}} >
                 <Stack spacing={1} sx={{m:'auto 15px', alignContent:'center'}} >
-                    <Typography variant="body1" sx={{fontWeight:700}} >Total $ 500</Typography>
-                    <Button onClick={()=>{setOptions(el.id)}} variant="contained" > Dejar review </Button>
+                    <Typography variant="body1" sx={{fontWeight:700}} >{`Total -> ${fCurrency(el.precio *2 )}`}</Typography>
+                    <Button onClick={()=>{setOptions(el.id)}} variant="contained" > Calificar </Button>
                 </Stack>
             </Grid>
         </Grid>

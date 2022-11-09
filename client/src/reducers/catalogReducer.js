@@ -9,12 +9,16 @@ const initialState = {
   orderKey: 'nombre',
   error: null,
   categ: null,
+  categAlert: {
+    categ:'',
+    subCateg:[],
+  },
+
   categName: ['TENTACION SALUDABLE', 'ALACENA SALUDABLE', 'ESTILO DE VIDA', 'BEBIDAS'],
   setBanner: true,
   cart: [],
   subtotal: 0,
-  cartInfo: {}
-  
+  cartInfo:{}
 };
 export const catalogReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -57,6 +61,7 @@ export const catalogReducer = (state = initialState, action) => {
         products: action.payload.data,
         filteredProducts: action.payload.data,
         categ: action.payload.cat,
+        categAlert: {...state.categAlert, categ: action.payload.cat},
         setBanner: false,
       };
     case 'ADD':
@@ -65,11 +70,14 @@ export const catalogReducer = (state = initialState, action) => {
         filteredProducts: state.products,
       };
     case 'ADD_NESTED_FILTER':
+      let newSubCateg = action.payload.cat;
+      if (newSubCateg) newSubCateg = [...state.categAlert.subCateg, newSubCateg]
       return {
         ...state,
         products: action.payload.data,
         nestedFilter: action.payload.data,
         categ: action.payload.cat,
+        categAlert: {...state.categAlert, subCateg: newSubCateg },
         setBanner: false,
       };
     case 'REMOVE_FILTER':
@@ -78,6 +86,7 @@ export const catalogReducer = (state = initialState, action) => {
         products: action.payload.data,
         nestedFilter: action.payload.newNested,
         categ: action.payload.cat,
+        categAlert: {...state.categAlert, subCateg: state.categAlert.subCateg.filter(e=>e != action.payload.cat) },
         setBanner: false,
       };
     case 'RESET_CATALOG':
@@ -88,6 +97,10 @@ export const catalogReducer = (state = initialState, action) => {
         orderKey:'nombre',
         nestedFilter: [],
         filteredProducts: [],
+        categAlert: {
+          categ:'',
+          subCateg:'',
+        },
         setBanner: true,
       };
     case 'ORDER_ASC':
@@ -150,7 +163,7 @@ export const catalogReducer = (state = initialState, action) => {
     case TYPES.ADD_TO_CART: {
       let newItem = state.allProducts.find((product) => product.id === action.payload.id);
       // console.log(newItem, 'En el reducer.')
-      let itemInCart = state.cart.find((item) => item.id === newItem.id);
+      let itemInCart = state.cart.find((item) => item.id == newItem.id);
 
       return itemInCart
         ? {
@@ -208,6 +221,14 @@ export const catalogReducer = (state = initialState, action) => {
           subtotal:state.cart.reduce( (a,b)=> a + (b.precio * b.quantity),0 )
       }
     }
+
+    case 'PAID_MERCADO_PAGO':
+      console.log(action.payload,'estamos en el REDUCER');
+      return {
+        ...state,
+       cartInfo: action.payload
+
+      } 
 
     default:
       return state;

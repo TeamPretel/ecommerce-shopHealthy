@@ -7,8 +7,11 @@ import Box from '@mui/material/Box';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import { CardMedia, Divider, Grid, Rating, Stack, TextField } from '@mui/material';
+import { Alert, capitalize, CardMedia, Divider, Grid, Rating, Stack, TextField } from '@mui/material';
 import { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
+import axios from 'axios'
+
 
 const drawerBleeding = 10;
 
@@ -33,11 +36,17 @@ const Puller = styled(Box)(({ theme }) => ({
 }));
 
 export const DrawerReview = ({toggleDrawer, open, setOpen, nombre, img, id, compareId}) => {
-//   const { window } = props;
 
-  // This is used only for the example
-//   const container = window !== undefined ? () => window().document.body : undefined;
 const [value, setValue] = useState(0);
+const { handleSubmit, formState:{errors}, control, } = useForm();
+
+const onSubmit = async (data)=>{
+  let newData = {...data, puntaje: parseInt(data.puntaje),  productoId:parseInt(id), usuarioId:2}
+  console.log(newData)
+  let json = await axios.put(`https://henryhealthy.shop/tresmiluno/review/crear`,newData);
+  console.log(json, 'id q devuelve el back')
+
+}
 
   return (
     <Root>
@@ -90,12 +99,16 @@ const [value, setValue] = useState(0);
           <Grid container sx={{boxShadow:15, borderRadius:'8px', my:5 }}>
 
             <Grid item xs={12}  >
-                <Typography variant="body1" sx={{ py:2, pl:3, fontWeight:700, fontSize:'1rem'}} >{ `NOS ENCANTARIA CONOCER TU OPINIÓN ACERCA DE ${nombre.toUpperCase()} `}</Typography>
+                <Typography variant="body1" sx={{ py:2, pl:3, fontWeight:700, fontSize:'1rem'}} >{ `NOS ENCANTARIA CONOCER TU OPINIÓN ACERCA DE ESTE PRODUCTO`}</Typography>
             </Grid>
 
             <Grid item xs={12} >
                 <Divider variant="middle" color='black' sx={{mb:2}} />
 
+            </Grid>
+
+            <Grid item xs={12}>
+              <Typography pl={3} >{capitalize(nombre)}</Typography>
             </Grid>
 
             <Grid item xs={12} md={2} sx={{display:'flex', justifyContent:'center'}} >
@@ -108,27 +121,67 @@ const [value, setValue] = useState(0);
 
             </Grid>
 
-            <Grid item xs={12} md={6} sx={{display:'flex', alignItems:'center'}} >
-                <TextField
-                    sx={{width:'90%',}}
-                    multiline
-                    rows={3}
-                    label='Escribe tu comentario por favor'
+            <Grid item xs={12} md={6} >
+                <Stack sx={{display:'flex',pt:2, justifyContent:'center',alignItems:'center',mb:1, width:'100%'}} spacing={1} >
+
+                <Controller 
+                    name="titulo"
+                    control={control}
+                    rules={{ required: true,}}
+                    defaultValue=''
+                    render={({ field }) => <TextField
+                                                sx={{width:'90%',}}
+                                                label='Titulo'
+                                                {...field}
+                                            />}
+                
                 />
+                {errors?.titulo?.type === 'required' &&  <Alert sx={{height:'40px', p:0, mb:2}} severity="error">El titulo es requerido</Alert>}
+                {/* {errors?.titulo?.type === 'minLength' &&  <Alert sx={{height:'40px', p:0, mb:2}} severity="error">Minimo 30 caracteres</Alert>}
+                {errors?.titulo?.type === 'maxLength' &&  <Alert sx={{height:'40px', p:0, mb:2}} severity="error">Maximo 100 caracteres</Alert>} */}
+
+                <Controller 
+                    name="comentario"
+                    control={control}
+                    defaultValue=''
+                    rules={{ required: true, minLength:30, maxLength:100 }}
+                    render={({ field }) => <TextField
+                                              
+                                              sx={{width:'90%',}}
+                                              multiline
+                                              rows={3}
+                                              label='Tu comentario aquí'
+                                              {...field}
+                                            />}
+                
+                />
+                {errors?.comentario?.type === 'required' &&  <Alert sx={{height:'40px', p:0, mb:2}} severity="error">El precio es requerido</Alert>}
+                {errors?.comentario?.type === 'minLength' &&  <Alert sx={{height:'40px', p:0, mb:2}} severity="error">Minimo 30 caracteres</Alert>}
+                {errors?.comentario?.type === 'maxLength' &&  <Alert sx={{height:'40px', p:0, mb:2}} severity="error">Maximo 100 caracteres</Alert>}
+                </Stack>
+             
             </Grid>
 
             <Grid item xs={12} md={4} sx={{alignItems:'center'}} >
                 <Stack spacing={1} sx={{m:'8px 15px', alignContent:'center'}} >
-                    <Rating 
-                        sx={{m:'10px auto'}}
-                        name="simple-controlled"
-                        value={value}
-                        onChange={(event, newValue) => {
-                        setValue(newValue);
-                        }}
-                
-                    />
-                    <Button variant="contained" > Guardar </Button>
+
+                <Controller 
+                    name="puntaje"
+                    control={control}
+                    defaultValue={value}
+                    rules={{ required: true }}
+                    render={({ field }) => <Rating 
+                                                sx={{m:'10px auto'}}
+                                                name="simple-controlled"
+                                                {...field}
+                                        
+                                            />
+
+                  }
+                  />
+                  {errors?.puntaje?.type === 'required' &&  <Alert sx={{height:'40px', p:0, mb:2}} severity="error">El precio es requerido</Alert>}
+
+                    <Button variant="contained" type='submit' onClick={handleSubmit(d=>onSubmit(d))} > Guardar </Button>
                 </Stack>
             </Grid>
         </Grid>
