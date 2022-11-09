@@ -24,8 +24,7 @@ import { Preferencias_comp } from '../components/Preferencias';
 import { FormCarrito } from '../components/FormCarrito';
 import { useForm, Controller } from 'react-hook-form';
 import { PaidMercadoPago } from '../actions/pagoMercadoPago';
-
-
+import { PaiadTable } from '../components/PaidTable';
 
 function ccyFormat(num) {
   return `${num.toFixed(2)}`;
@@ -71,7 +70,8 @@ export const Shopping = ()=> {
     dispatch(initProducts())
   }, [dispatch]);
   
-  const {cart, isLoading, subtotal, cartInfo} = useSelector( s=>s.catalogReducer )
+  const {cart, isLoading, subtotal, cartInfo, mercadoLoad} = useSelector( s=>s.catalogReducer )
+
   useEffect(() => {
     dispatch({type:TYPES.TOTAL_AMOUNT})
   }, [cart, dispatch])
@@ -87,7 +87,7 @@ export const Shopping = ()=> {
           "title": String(producto.nombre),
           "description": String(producto.descripcion),
           "category_id": String(newData.id),
-          "quantity": String(producto.quantity),
+          "quantity": producto.quantity,
           "currency_id":"ARS",
           "unit_price": producto.precio
       }
@@ -102,43 +102,45 @@ export const Shopping = ()=> {
               "email": newData.email,
               "identification": {
               "type": "DNI",
-              "number": newData.id
+              "number": String(newData.id)
             }
           }
         } 
     console.log( 'DATA QUE SE DESPACHA...') 
+    // info = JSON.stringify(info)
     console.log(info) 
 
     dispatch(PaidMercadoPago(info))
-    setTimeout(function(){
-      window.open(`${cartInfo.init_point}`, '_blank')
-  }, 2000);
-
+    
   }
 
+useEffect(() => {
+  if (mercadoLoad) {
+    window.open(`${cartInfo.init_point}`, '_blank');
+    dispatch({type:'SET_ISLOADING_MERCADO_FALSE'});
+    dispatch({type:TYPES.CLEAR_CART})
+    navigate('/catalogo',{ replace: true })
+  }
+}, [dispatch, cartInfo]);
+
+  
   return (
     <>
       <Container sx={{ minWidth:'90%'}} >
       <Box>
-        <Button startIcon={<ChevronLeftIcon/>} onClick={()=>navigate(-1)}  > Volver a la tienda</Button>
+        <Button startIcon={<ChevronLeftIcon/>} onClick={()=>navigate(-1)}  > Volver</Button>
         <Typography variant='subtitle2' sx={{fontSize:25, my:2}} > Finaliza tu compra </Typography>
         <Typography variant='body2' sx={{fontSize:15, mb:6}} > <WarningIcon sx={{fontSize:'small', mt:-0.4, mr:1}} /> Completá el formulario y luego revisá que tu pedido sea correcto. </Typography>
 
       </Box>
       <Grid container spacing={2} >
-        <Grid item xs={8} >
+        <Grid item sx={{ display:{ xs:'none', md:'flex'} }} xs={12} >
           <TableContainer component={Paper}>
             <Table aria-label="spanning table">
               <TableHead  >
-                {/* <TableRow>
-                  <TableCell align="center" colSpan={4}>
-                    Detalles
-                  </TableCell>
-                  <TableCell align="right">Precio</TableCell>
-                </TableRow> */}
                 <TableRow >
-                  <TableCell sx={{textAlign:'center',bgcolor:t=>t.palette.primary.main, color:'white'}}>Desc</TableCell>
-                  <TableCell align="right" sx={{textAlign:'center',bgcolor:t=>t.palette.primary.main, color:'white'}} >img</TableCell>
+                  <TableCell sx={{textAlign:'right',bgcolor:t=>t.palette.primary.main, color:'white'}}>Desc</TableCell>
+                  <TableCell align="right" sx={{textAlign:'center',bgcolor:t=>t.palette.primary.main, color:'white'}} ></TableCell>
                   <TableCell align="right" sx={{textAlign:'center',bgcolor:t=>t.palette.primary.main, color:'white'}} >Unidades</TableCell>
                   <TableCell align="right" sx={{textAlign:'center',bgcolor:t=>t.palette.primary.main, color:'white'}} >Precio Unitario</TableCell>
                   <TableCell align="right" sx={{textAlign:'center',bgcolor:t=>t.palette.primary.main, color:'white'}} >SubTotal</TableCell>
@@ -199,12 +201,14 @@ export const Shopping = ()=> {
           </TableContainer>
         </Grid>
         
-        <Grid item xs={4} > <Typography>rellenar</Typography> </Grid>
+        <Grid item sx={{ display:{ xs:'flex', md:'none'} }} xs={12} > 
+            <PaiadTable cart={cart} isLoading={isLoading} subtotal={subtotal} />
+        </Grid>
 
-        <Grid item xs={8} >
+        <Grid item xs={12} md={8} >
           <FormCarrito errors={errors} control={control} handleSubmit={handleSubmit} onSubmit={handleSubmit} />
         </Grid>
-        <Grid item xs={4} >
+        <Grid item xs={12} md={4} >
             <Stack  spacing={4} sx={{justifyContent:'center', alingItems:'center', display:'flex', }} >
               <MercadoPagoCart />
               <Button

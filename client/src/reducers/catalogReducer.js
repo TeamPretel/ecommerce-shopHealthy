@@ -13,7 +13,7 @@ const initialState = {
     categ:'',
     subCateg:[],
   },
-
+  mercadoLoad:null,
   categName: ['TENTACION SALUDABLE', 'ALACENA SALUDABLE', 'ESTILO DE VIDA', 'BEBIDAS'],
   setBanner: true,
   cart: [],
@@ -54,6 +54,16 @@ export const catalogReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
+      };
+    case 'SET_ISLOADING_MERCADO_TRUE':
+      return {
+        ...state,
+        mercadoLoad: true,
+      };
+    case 'SET_ISLOADING_MERCADO_FALSE':
+      return {
+        ...state,
+        mercadoLoad: false,
       };
     case 'FILTER_BY_CATEGORY':
       return {
@@ -212,7 +222,10 @@ export const catalogReducer = (state = initialState, action) => {
     }
 
     case TYPES.CLEAR_CART: {
-      return shoppingInitialState;
+      return {
+        ...state,
+        cart:[]
+      };
     }
 
     case TYPES.TOTAL_AMOUNT:{
