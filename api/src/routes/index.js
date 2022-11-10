@@ -6,10 +6,11 @@ const usuarioruta = require('./usuarios')
 const compraRuta = require('./rutapago')
 const reviewRuta = require('./review')
 const detalleventaRuta = require('./detalleventa')
-const path = require('path')
-const { conn } = require('../db')
-const cargadores = require('../controlers/cargadores')
-// const Marca = require('../models/Marca')
+const ventaRuta = require('./venta')
+const path = require('path');
+const { conn } = require('../db');
+const cargadores = require('../controlers/cargadores');
+const Marca = require('../models/Marca');
 const {
   categoriaCarga,
   marcasCarga,
@@ -41,6 +42,7 @@ router.use('/tresmiluno/marca', marcasRuta)
 router.use('/tresmiluno/compra', compraRuta)
 router.use('/tresmiluno/review', reviewRuta)
 router.use('/tresmiluno/detalleventa', detalleventaRuta)
+router.use('/tresmiluno/venta',ventaRuta)
 router.use('/tresmiluno/dashboard', require('./dashboard'))
 
 module.exports = router

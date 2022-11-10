@@ -5,8 +5,8 @@ module.exports = (sequelize) => {
   // defino el modelo
   sequelize.define("usuario", {
     id: {
-      type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.BIGINT,
+        // defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         primaryKey: true,
     },
@@ -21,6 +21,10 @@ module.exports = (sequelize) => {
     telefono: {
       type: DataTypes.BIGINT,
       allowNull: true,
+    },
+    uid:{
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     mail: {
       type: DataTypes.STRING,

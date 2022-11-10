@@ -22,7 +22,16 @@ const router = Router();
   router.get("/", async (req, res) => {
 
     const {nombre} = req.query
-    let todosLosProductos = await Producto.findAll({where: {activo: true}})
+    let todosLosProductos = await Producto.findAll({
+      where: {activo: true},
+      include: [{ 
+        model: Categoria,
+        attributes: ['nombre']
+      },{
+        model: Marca,
+        attributes: ['nombre']
+      }]
+    });
     if (nombre) {
       let productoFiltrado = todosLosProductos.filter( prod => prod.nombre.toLowerCase().includes(nombre.toLowerCase()))
       productoFiltrado.length ? 

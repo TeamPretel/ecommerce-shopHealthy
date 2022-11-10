@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const  mercadopago  = require("../mercadoPago");
-const { Venta, Detalleventa, Producto } = require("../db")
+const { Venta, Detalleventa, Producto, Usuario } = require("../db")
+const nodemailer= require('nodemailer');
 
 const router = Router();
 
@@ -55,8 +56,9 @@ router.post('/notificacion', async (req,res)=>{
       console.log('OBTENIENDO EL MERCHAN ORDER..', orderId)
       merchantOrder= await mercadopago.merchant_orders.findById(orderId)  
       console.log('ACA VIENE LA DATA DEL MERCHANT ORDER.')
-      // console.log(merchantOrder.body)
-      if(merchantOrder.body.payments[0].status === 'approved'){
+      console.log(merchantOrder.body)
+      // if(merchantOrder.body.payments[0]?.status === 'approved'){
+      if(true){
 
         const venta = await Venta.create({
           id: merchantOrder.body.payments[0].id,
@@ -81,13 +83,40 @@ router.post('/notificacion', async (req,res)=>{
           producto.stock = producto.stock - item.quantity
           producto.save()
     
-        })  
+        }) 
+
+        let usuario = await Usuario.findByPk(parseInt(merchantOrder.body.items[0].category_id))
+
+        const transport = nodemailer.createTransport({
+          host: 'smtp-mail.outlook.com',
+          port: 587,   //con ssl o 25 sin ssl
+          secure: false,
+          auth: {
+              user:'healthyshophenry@outlook.com' ,
+              pass: 'proyectogripal7'
+          },
+          tls: {
+              rejectUnauthorized: false   //permite mandar mails desde otro lado q no sea el localhost
+          }
+      })
+          const info = await transport.sendMail({
+          from: '"Healthy Shop 🥗🍚" <healthyshophenry@outlook.com>', 
+          to: `${usuario.mail}`, 
+          subject: "Confirmación de Compra", 
+          
+          html: (`<b><h1>Hola! Tu compra ha sido registrada con el número ${merchantOrder.body.payments[0].id}, 
+                  con fecha ${merchantOrder.body.payments[0].date_approved}.
+                  Gracias por confiar en nuestros productos.</h1></b>`), 
+        })
+        
+        
+     
         
        
       }
-      else{
-        res.send("La venta no se pudo registrar")
-      }
+      // else{
+      //   res.send("La venta no se pudo registrar")
+      // }
 
       res.send("La venta se registró correctamente")
       break; 
@@ -97,13 +126,13 @@ router.post('/notificacion', async (req,res)=>{
 // RUTA SOLAMENTE PARA PROBAR REGISTRO DE VENTA/DETALLEVENTA Y ACTUALIZ STOCK   /tresmiluno/compra/carga
 router.post('/carga', async (req,res)=>{
   var merchantOrder = {
-    id: 6349337013,
+    id: 6349337010,
     status: 'closed',
     external_reference: '',
     preference_id: '1227569427-0fa40caa-d8a2-44bf-b17b-25f70c5eebd9',
     payments: [
       {
-        id: 51085303342,
+        id: 10085333399,
         transaction_amount: 347.05,
         total_paid_amount: 1154.25,
         shipping_cost: 0,
@@ -134,7 +163,7 @@ router.post('/carga', async (req,res)=>{
     items: [
       {
         id: '3',
-        category_id: '20565251',
+        category_id: '30552200',
         currency_id: 'ARS',
         description: 'Inspired by the classic foldable art of origami',
         picture_url: null,
@@ -144,7 +173,7 @@ router.post('/carga', async (req,res)=>{
       },
       {
         id: '4',
-        category_id: '20565251',
+        category_id: '30552200',
         currency_id: 'ARS',
         description: 'ZERO',
         picture_url: null,
@@ -185,7 +214,31 @@ router.post('/carga', async (req,res)=>{
       producto.stock = producto.stock - item.quantity
       producto.save()
 
-    })  
+    })
+    /* let usId = parseInt(merchantOrder.body.items[0].category_id) 
+    let usuario = await Usuario.findByPk(usId) */
+
+    const transport = nodemailer.createTransport({
+      host: 'smtp-mail.outlook.com',
+      port: 587,   //con ssl o 25 sin ssl
+      secure: false,
+      auth: {
+          user:'healthyshophenry@outlook.com' ,
+          pass: 'proyectogripal7'
+      },
+      tls: {
+          rejectUnauthorized: false   //permite mandar mails desde otro lado q no sea el localhost
+      }
+  })
+      const info = await transport.sendMail({
+      from: '"Healthy Shop 🥗🍚" <healthyshophenry@outlook.com>', 
+      to: `elmativega3@gmail.com`, 
+      subject: "Confirmación de Compra", 
+      
+      html: (`<b><h1>Hola! Tu compra ha sido registrada con el número , 
+              con fecha .
+              Gracias por confiar en nuestros productos.</h1></b>`), 
+    })
 
     res.send('anda todo')
   }
