@@ -57,9 +57,14 @@ router.post('/notificacion', async (req,res)=>{
       merchantOrder= await mercadopago.merchant_orders.findById(orderId)  
       console.log('ACA VIENE LA DATA DEL MERCHANT ORDER.')
       console.log(merchantOrder.body)
-      // if(merchantOrder.body.payments[0]?.status === 'approved'){
-      if(true){
 
+      let idmp = merchantOrder.body.payments[0].id 
+      let vta = await Venta.findOne({ where: { id: idmp } })
+      console.log(idmp, 'idmp')
+      console.log(vta, 'vta existente')
+
+      if(merchantOrder.body.payments[0]?.status === 'approved' && vta === null){
+      /* if(true){ */        
         const venta = await Venta.create({
           id: merchantOrder.body.payments[0].id,
           fecha: merchantOrder.body.payments[0].date_approved,
@@ -114,9 +119,9 @@ router.post('/notificacion', async (req,res)=>{
         
        
       }
-      // else{
-      //   res.send("La venta no se pudo registrar")
-      // }
+      else{
+        console.log('la venta ya existe')
+      }
 
       res.send("La venta se registró correctamente")
       break; 
@@ -132,7 +137,7 @@ router.post('/carga', async (req,res)=>{
     preference_id: '1227569427-0fa40caa-d8a2-44bf-b17b-25f70c5eebd9',
     payments: [
       {
-        id: 10085333399,
+        id: 88888333399,
         transaction_amount: 347.05,
         total_paid_amount: 1154.25,
         shipping_cost: 0,
@@ -188,8 +193,12 @@ router.post('/carga', async (req,res)=>{
     order_status: 'paid'
   };
 
-
-  if(merchantOrder.payments[0].status === 'approved'){   //merchantOrder.body.payments...
+  
+  let idmp = merchantOrder.payments[0].id 
+  let vta = await Venta.findOne({ where: { id: idmp } })
+  console.log(idmp, 'idmp')
+  console.log(vta, 'vta existente')
+  if(merchantOrder.payments[0].status === 'approved' && vta === null){   //merchantOrder.body.payments...
        
      const venta = await Venta.create({
       id: merchantOrder.payments[0].id,
@@ -241,7 +250,10 @@ router.post('/carga', async (req,res)=>{
     })
 
     res.send('anda todo')
+  }else{
+    console.log('ya existe una venta')
   }
+
 
 
 
