@@ -31,7 +31,7 @@ export const RouterApp = () => {
         <Route element={<ProtectedRoute isAllowed={user.logged} />} >
           <Route path="/usuario/*" element={<UserRoutes />} />
         </Route>
-        <Route element={<ProtectedRoute isAllowed={user.logged && user.isAdmin} />} >
+        <Route element={<ProtectedRoute isAllowed={user.logged && user.uid === user.adminId} />} >
           <Route path="/admin/*" element={<RouterDashBoard />} />
         </Route>
         <Route path="/" element={<Navigate to='/catalogo' />} />
@@ -40,8 +40,10 @@ export const RouterApp = () => {
         <Route path="/contacto" element={<Contact />} />
         <Route path="/registro" element={<Register />} />
         <Route path="/producto" element={<CrearProducto />} />
+        <Route path="/comprar" element={<Shopping />} />
         <Route path="/no_encontrado" element={<NotFound404/>}/>
         <Route path="/*" element={<NotFound404 />} />
+
       </Routes>
     </>
   );

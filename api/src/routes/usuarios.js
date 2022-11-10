@@ -188,7 +188,7 @@ router.put("/modificar/:id", async (req, res) => {
       let cambios=[]
 
       if (uid) {
-        usuario.id = uid;
+        usuario.uid = uid;
         usuario.save();
         
       }

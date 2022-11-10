@@ -47,7 +47,7 @@ export const ProductCard = ({imgCard, prodName, prodPrice,id, stock})=> {
           /> }
       </Box>
       <CardContent>
-            <RatingProduct sx={{alingItems:"center"}} />
+            {/* <RatingProduct sx={{alingItems:"center"}} /> */}
             <Typography sx={{height:'50px'}} variant="body2" color="text.primary" textTransform="uppercase" fontWeight="bold">
                 {prodName}
             </Typography>

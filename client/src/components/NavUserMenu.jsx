@@ -3,7 +3,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HandleLogout from '../helpers/HandleLogOut';
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { usuarioLogged, } from "../helpers/userMenuLinks";
+import { usuarioLogged, admin } from "../helpers/userMenuLinks";
 
 export const NavUserMenu = ({user}) => {
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -37,21 +37,22 @@ export const NavUserMenu = ({user}) => {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
         >
-        {(!user.logged)
+        {
+          (!user.logged)
             ? <Button 
             component={RouterLink}
             sx={{textDecoration:'none', color: '#64B98B',"&:hover":{color:'#57AF57' } }}
             to='/acceso'
             > Iniciar sesión
             </Button>
-            :
+
+            :(user.logged && user.uid == user.adminId)?
             <Box>
-            {usuarioLogged(user.nombre).map( (el, i) => (
-            <MenuItem key={i} onClick={handleCloseUserMenu}>
+            {admin(user.nombre).map( (el, i) => (
+            <MenuItem key={i} onClick={handleCloseUserMenu} component={RouterLink} to={el.link} >
                 <Typography 
                 sx={{textDecoration:'none', color: '#64B98B',"&:hover":{color:'#64B98B' } }}
-                component={RouterLink}
-                to={el.link}
+
                 >
                 {el.label}
                 </Typography>
@@ -60,7 +61,26 @@ export const NavUserMenu = ({user}) => {
             <MenuItem onClick={handleCloseUserMenu}>
                 <HandleLogout />
             </MenuItem>
-            </Box>
+          </Box>
+
+            :
+
+            <Box>
+            {usuarioLogged(user.nombre).map( (el, i) => (
+            <MenuItem key={i} onClick={handleCloseUserMenu} component={RouterLink} to={el.link} >
+                <Typography 
+                sx={{textDecoration:'none', color: '#64B98B',"&:hover":{color:'#64B98B' } }}
+
+                >
+                {el.label}
+                </Typography>
+            </MenuItem>
+            ))}
+            <MenuItem onClick={handleCloseUserMenu}>
+                <HandleLogout />
+            </MenuItem>
+          </Box>
+
         }
         </Menu>
     </Box> 

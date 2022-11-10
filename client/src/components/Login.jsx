@@ -1,5 +1,5 @@
 // import { AuthContext } from "../auth/AuthContext";
-import * as React from "react";
+import React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -17,12 +17,14 @@ import { Link as RouterLink, Navigate } from "react-router-dom";
 import firebaseApp from '../credenciales'
 import { useNavigate } from "react-router-dom";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../auth/AuthContext";
 import {getAuth, createUserWithEmailAndPassword, signInWithRedirect,GoogleAuthProvider,signInWithPopup,signInWithEmailAndPassword } from 'firebase/auth'
 import { type } from "../../types";
 import Swal from 'sweetalert2'
 import validator from 'validator'
+import { getUsuarios } from "../helpers/getUsuarios";
+import { useState } from "react";
 const auth= getAuth(firebaseApp)
 const googleProvider = new GoogleAuthProvider();
 
@@ -56,9 +58,17 @@ export const Login_comp =  () => {
   const[leyendaPassword, setLeyendaPassword]=React.useState('')
   const[errorEmail, setErrorEmail]=React.useState(false)
   const[errorPassword, setErrorPassword]=React.useState(false)
-  
 
   const {dispatch, user} = useContext(AuthContext); 
+
+  useEffect(() => {
+    const getuser = async()=> {
+      const result = await getUsuarios();
+      dispatch({type:'LOAD_USERS', payload:result})
+    }
+    getuser();
+  }, [])
+  
   let navigate = useNavigate();
   if(user.logged){
     Swal.fire({
@@ -104,17 +114,25 @@ if(errorEmail || errorPassword){
   const contraseña= e.target.password.value
   // console.log(correo,contraseña)
   const usuario = await signInWithEmailAndPassword(auth,correo,contraseña)
-  console.log(usuario)
+
+  const result = user.usuarios.find( el=> el.uid == usuario.user.uid)
+
   const action = {
     type: type.login,
     payload: {
-      nombre: usuario.user.displayName? usuario.user.displayName.toLocaleLowerCase() : '',
-      uid: usuario.user.uid, 
-      email: usuario.user.email
+      nombre: result.nombre || '',
+      uid: result.uid, 
+      mail: usuario.user.email,
+      apellido: result.apellido,
+      direccion: result.direccion,
+      codPostal: result.codPostal,
+      telefono: result.telefono,
+      dni: result.id
     }
   }
+  console.log(action)
   dispatch(action)
-  // console.log(action)
+}
   Swal.fire({
     position: 'center',
     icon: 'success',
@@ -126,7 +144,7 @@ if(errorEmail || errorPassword){
     setTimeout(function(){
       navigate('/catalogo') 
     }, 2000);
- }
+ 
 };
 
   const handleSubmitGoogle =  async  (e) => {
@@ -138,19 +156,25 @@ if(errorEmail || errorPassword){
       // console.log(token, 'token....')
       // console.log(result , 'resultado...de google.')
       
-      const user = result.user;
-      console.log(user.displayName)
+      const usuario = result.user;
+
+      const resultLocal = user.usuarios.find( el=> el.uid == usuario.uid)
+
       const action = {
         type: type.login,
         payload: {
-          nombre: user.displayName.toLocaleLowerCase(),
-          uid: user.uid,
-          email: user.email
+          nombre: resultLocal.nombre,
+          uid: usuario.uid, 
+          mail: usuario.email,
+          apellido: resultLocal.apellido,
+          direccion: resultLocal.direccion,
+          codPostal: resultLocal.codPostal,
+          telefono: resultLocal.telefono,
+          dni: resultLocal.id
         }
       }
       dispatch(action)
-      // ...
-    })
+    }) 
     .catch((error) => {
       
       const errorCode = error.code;
@@ -168,7 +192,7 @@ if(errorEmail || errorPassword){
           //   showConfirmButton: false,
           //   timer: 1500
           // });
-          setTimeout(navigate('/catalogo'),3000)
+          navigate('/catalogo')
            
         }
 
@@ -179,7 +203,7 @@ if(errorEmail || errorPassword){
 
 
   return (
-      <Container component="main" maxWidth="xs" sx={{marginTop:"100px"}}>
+      <Container component="main" maxWidth="xs" sx={{marginTop:"4%"}}>
         <CssBaseline />
         <Box
           sx={{

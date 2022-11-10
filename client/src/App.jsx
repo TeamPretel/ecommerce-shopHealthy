@@ -4,6 +4,7 @@ import { AuthContext } from "./auth/AuthContext";
 import { RouterApp } from "./routes/RouterApp";
 import { authReducer } from "./auth/authReducer";
 import { useSelector } from "react-redux";
+import { getUsuarios } from "./helpers/getUsuarios";
 
 
 const init = () => {
@@ -32,6 +33,14 @@ export const App = () => {
     if(!cart.length) {localStorage.setItem("cart", []);return};
     localStorage.setItem("cart", JSON.stringify(cart))
  },[cart])
+ 
+ useEffect(() => {
+  const getuser = async()=> {
+    const result = await getUsuarios();
+    dispatch({type:'LOAD_USERS', payload:result})
+  }
+  getuser();
+}, [])
 
 // function updateState(value){
 //  return  setLogeado(value)

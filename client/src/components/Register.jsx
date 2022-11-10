@@ -14,7 +14,7 @@ import { Home, Preferencias } from '../pages';
 import{Link as RouterLink} from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../auth/AuthContext";
 import { type } from "../../types";
 import firebaseApp from '../credenciales'
@@ -30,6 +30,7 @@ import { FormularioPreferencias } from './FormularioPreferencias';
 import { Stack } from '@mui/system';
 import { Footer_comp } from './Footer';
 import axios from 'axios';
+import { getUsuarios } from '../helpers/getUsuarios';
 var emailRegex = new RegExp("^([A-Za-z]|[0-9])+$")
 
 
@@ -75,14 +76,24 @@ export const Register_comp = () => {
           const usuario = await createUserWithEmailAndPassword(auth,correo,contraseña)
           console.log('DATOS USUARIO FIREBASE...')
           console.log(usuario)
-          newData = {...newData, id: usuario.user.uid}
+          newData = {...newData, uid: usuario.user.uid}
+          console.log(usuario.user.uid)
+          console.log(newData)
           const action = {
             type: type.login,
             payload: {
-              name: usuario.user.email
+              nombre: newData.nombre,
+              apellido: newData.apellido,
+              mail: usuario.user.email,
+              direccion: newData.direccion,
+              codPostal: newData.codPostal,
+              telefono: newData.telefono,
+              uid: usuario.user.uid,
+              dni: newData.id
             }
           }
           dispatch(action)
+          // localStorage.setItem('user',JSON.stringify(user))
           const backMesage = await axios.post('https://henryhealthy.shop/tresmiluno/usuario/crear',newData );
           console.log(backMesage)
           Swal.fire({
@@ -124,7 +135,9 @@ export const Register_comp = () => {
           const action = {
             type: type.login,
             payload: {
-              name: user.email
+              nombre: user.displayName? user.displayName.toLocaleLowerCase() : '',
+              mail: user.email,
+              uid: user.uid
             }
           }
           dispatch(action)
@@ -135,7 +148,7 @@ export const Register_comp = () => {
           const errorCode = error.code;
           const errorMessage = error.message;
           // The email of the user's account used.
-          const email = error.customData.email;
+          const email = error.customData.mail;
           // The AuthCredential type that was used.
           const credential = GoogleAuthProvider.credentialFromError(error);
           // ...
@@ -154,13 +167,15 @@ export const Register_comp = () => {
 
   };
 
+
+
   return (
     <>
       {
         !loadRegister 
             ?
         <Container component="main" sx={{p:5, width:'60%'}} >
-            <Avatar sx={{ m: '5px auto', bgcolor: 'secondary.main' }}>
+            <Avatar sx={{ m: '5px auto',}}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography variant="h5" sx={{ m: '5px auto',textAlign:'center',pb:10 }} >
