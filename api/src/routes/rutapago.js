@@ -137,7 +137,7 @@ router.post('/notificacion', async (req,res)=>{
       res.send("La venta se registró correctamente")
       break; 
   }
-})
+}})
 
 // RUTA SOLAMENTE PARA PROBAR REGISTRO DE VENTA/DETALLEVENTA Y ACTUALIZ STOCK   /tresmiluno/compra/carga
 router.post('/carga', async (req,res)=>{
