@@ -12,7 +12,7 @@ import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductById } from "../helpers/getProductById";
 import { getReviewById } from "../helpers/getReviewsById.js";
@@ -20,6 +20,7 @@ import Page404 from "../dashboard/pages/Page404";
 import NotFound404 from "../pages/NotFound404";
 import Producto404 from "../pages/Producto404";
 import {TYPES} from '../actions/ShoppingCartActions.js'
+import { AuthContext } from "../auth/AuthContext";
 
 
 export const ProductDetail_comp = () => {
@@ -29,7 +30,8 @@ export const ProductDetail_comp = () => {
   const [review, setReview] = useState([])
   const [reviewLoad, setReviewLoad] = useState(true);
   const [revErr, setRevErr] = useState(null);
-  const [rating, setRating] = useState(0)
+  const [rating, setRating] = useState(0);
+  const { user } = useContext(AuthContext);
 
   const dispatch = useDispatch();
   const { isLoading,cart } = useSelector((state) => state.catalogReducer);
@@ -82,7 +84,7 @@ export const ProductDetail_comp = () => {
   }
   
   if (error) return <Producto404 />
-
+  
   return (
   <Box sx={{alignItems:'center', justifyContent:'center', display: 'flex', }}>
     
@@ -169,7 +171,7 @@ export const ProductDetail_comp = () => {
           <Grid key={rev.id} container sx={{boxShadow:15, borderRadius:'8px',my:2}}>
 
             <Grid item xs={12}  >
-                <Typography variant="body1" sx={{ py:2, pl:3, fontWeight:700, fontSize:'1rem'}} > {`user: ${rev.usuarioId}`} </Typography>
+                <Typography variant="body1" sx={{ py:2, pl:3, fontWeight:700, fontSize:'1rem'}} > { user.usuarios?.find(el=>el.id==rev.usuarioId)?.nombre || rev.usuarioId } </Typography>
             </Grid>
 
             <Grid item xs={12} >

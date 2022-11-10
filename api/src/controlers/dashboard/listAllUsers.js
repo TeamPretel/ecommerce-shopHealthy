@@ -1,6 +1,7 @@
 const auth = require('./initFAdmin')
 
 const listAllUsers = async (nextPageToken) => {
+  console.log('Trayendo la tablade auth/users de firebase...')
   // List batch of users, 1000 at a time.
   const listUsersResult = await auth.listUsers(1000, nextPageToken)
   const myUsers = []
@@ -19,16 +20,8 @@ const listAllUsers = async (nextPageToken) => {
     }
     myUsers.push(obj)
   })
+  console.log('Ahí tevan estos users: ' + JSON.stringify(myUsers))
   return myUsers
-// console.log(myUsers)
-// if (listUsersResult.pageToken) {
-//   // List next batch of users.
-//   listAllUsers(listUsersResult.pageToken)
-// }
-// })
-// .catch((error) => {
-//   console.log('Error listing users:', error)
-// })
 }
 
 module.exports = listAllUsers

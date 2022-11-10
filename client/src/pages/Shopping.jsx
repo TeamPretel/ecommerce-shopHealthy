@@ -7,10 +7,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Footer_comp } from '../components/Footer';
-import { Grid, Typography, Box, Container, Stack, Button, IconButton, Skeleton, capitalize } from '@mui/material';
+import { Grid, Typography, Box, Container, Stack, Button, IconButton, Skeleton, capitalize, Alert, AlertTitle } from '@mui/material';
 import WarningIcon from '@mui/icons-material/Warning';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+<<<<<<< HEAD
 import { redirect, useNavigate } from 'react-router-dom';
+=======
+import { Navigate, UNSAFE_DataStaticRouterContext, useNavigate } from 'react-router-dom';
+>>>>>>> main
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { initProducts } from '../actions/getInitProducts';
@@ -26,6 +30,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { PaidMercadoPago } from '../actions/pagoMercadoPago';
 import { PaiadTable } from '../components/PaidTable';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import { AuthContext } from '../auth/AuthContext';
+import { Link as RouterLink } from 'react-router-dom';
 
 function ccyFormat(num) {
   return `${num.toFixed(2)}`;
@@ -66,6 +72,8 @@ export const Shopping = ()=> {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { user } = React.useContext(AuthContext);
+
   const { handleSubmit, formState:{errors}, control, } = useForm();
 
   const delFromCart = (id,all=false)=>{
@@ -138,7 +146,10 @@ useEffect(() => {
   
   return (
     <>
-      <Container sx={{ minWidth:'90%'}} >
+      {
+        (user.logged)
+        ?
+        <Container sx={{ minWidth:'90%'}} >
       <Box>
         <Button startIcon={<ChevronLeftIcon/>} onClick={()=>navigate(-1)}  > Volver</Button>
         <Typography variant='subtitle2' sx={{fontSize:25, my:2}} > Finaliza tu compra </Typography>
@@ -243,11 +254,22 @@ useEffect(() => {
             </Stack>
         </Grid>
       </Grid>
+<<<<<<< HEAD
 
 
       </Container>
       <a href={`${cartInfo.init_point}`} target='_blank'>pagar</a>
     <button onClick={handlersubmitMP}>iniciar pago</button>
+=======
+        </Container>
+        :<Container sx={{m:8}} >
+        <Alert severity="error" sx={{height:'80px', }}>
+          <Typography variant='h4' sx={{textAlign:'center'}} >Es necesario iniciar sesión para realizar una <strong>compra!</strong></Typography> 
+        </Alert>
+        <Button  sx={{m:8}} variant='contained' component={RouterLink} to='/acceso' >Ir a Inicio de sesión</Button>
+        </Container>
+      }
+>>>>>>> main
     <Footer_comp/>
     </>
   );

@@ -1,12 +1,18 @@
 import { type } from "../../types/index"
 
 const initialState = {
-  name: "user",
-  email:'',
+  nombre: "user",
+  mail:'',
   logged: false,
   uid: '',
-  adminId: 'cC0kgD9ykQW9o1jZvGH3OPXHuCl2',
-  isAdmin:false
+  adminId: 'HBz43Zp3ZVSSXKU9ELgaWXqfmZm2',
+  isAdmin:false,
+  apellido:'',
+  direccion:'',
+  codPostal:0,
+  telefono:0,
+  dni:0,
+  usuarios:[]
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -17,20 +23,37 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         nombre: action.payload.nombre? action.payload.nombre : 'user' ,
         logged: true,
-        email: action.payload.email,
-        uid: action.payload.uid,
+        mail: action.payload.mail,
+        uid: action.payload.uid || state.uid ,
         isAdmin: (state.adminId === action.payload.uid)?true:false,
+        apellido: action.payload.apellido,
+        direccion: action.payload.direccion,
+        dni: action.payload.dni,
+        telefono: action.payload.telefono,
+        codPostal: action.payload.codPostal,
       };
 
     case type.logout:
       return {
-        name: "",
-        email:'',
+        nombre: "",
+        mail:'',
         logged: false,
         uid: '',
-        adminId: 'cC0kgD9ykQW9o1jZvGH3OPXHuCl2',
-        isAdmin:false
+        adminId: 'HBz43Zp3ZVSSXKU9ELgaWXqfmZm2',
+        isAdmin:false,
+        apellido:'',
+        direccion:'',
+        codPostal:0,
+        telefono:0,
+        dni:0,
+        usuarios: state.usuarios,
       };
+    case'LOAD_USERS':
+      return {
+        ...state,
+        usuarios: action.payload
+      }
+    
     
 
     default:

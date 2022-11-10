@@ -45,20 +45,34 @@ router.post('/notificacion', async (req,res)=>{
   const {query}= req
   console.log('NOTIFICACION...')
   console.log({query})
-  const topic = query.topic
+  const topic = query.topic || query.type;
+  
   // console.log('ESTE DEBAJO ES EL TOPICC')
   // console.log({topic})
 
   var merchantOrder;
   switch (topic) {
-    case "merchant_order":
-      const orderId= query.id;
-      console.log('OBTENIENDO EL MERCHAN ORDER..', orderId)
-      merchantOrder= await mercadopago.merchant_orders.findById(orderId)  
-      console.log('ACA VIENE LA DATA DEL MERCHANT ORDER.')
-      console.log(merchantOrder.body)
-      // if(merchantOrder.body.payments[0]?.status === 'approved'){
-      if(true){
+    // case "merchant_order":
+    //   const orderId= query.id;
+    //   console.log('OBTENIENDO EL MERCHAN ORDER..', orderId)
+    //   merchantOrder= await mercadopago.merchant_orders.findById(orderId)  
+    //   console.log('ACA VIENE LA DATA DEL MERCHANT ORDER.')
+    //   console.log(merchantOrder.body)
+    case 'payment':
+
+        const paymentId= query.id || query['data.id']
+        console.log('obteniendo  el ID de pago')
+        console.log(paymentId)
+
+        const pago= await mercadopago.payment.findById(paymentId)
+        console.log('ESTE ES EL PAGO')
+        console.log(pago)
+        merchantOrder= await mercadopago.merchant_orders.findById(pago.body.order.id)
+        console.log(merchantOrder)
+        let idmp = merchantOrder.body.payments[0].id 
+        let vta = await Venta.findOne({ where: { id: idmp } })
+      if(merchantOrder.body.payments[0]?.status === 'approved' && !vta){
+      // if(true){
 
         const venta = await Venta.create({
           id: merchantOrder.body.payments[0].id,

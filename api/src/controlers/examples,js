@@ -1,0 +1,15 @@
+const { createUser, deleteUser } = require('./dashboard')
+
+const infoDePrueba = {
+  email: 'DonChiringo@tatata.com',
+  emailVerified: false,
+  phoneNumber: '77777777',
+  password: 'no se',
+  displayName: 'Don Chiringo Doe',
+  photoURL: 'http://www.chiringaderas.com/eldon/pornochambear.png',
+  disabled: false
+}
+
+const nuevoUsuario = await createUser(infoDePrueba)
+
+nuevoUsuario.
