@@ -84,7 +84,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      <Button sx={{bottom:1}} component={RouterLink} to='/catalogo' >
+      <Button variant='contained' sx={{bottom:1,}} component={RouterLink} to='/catalogo' >
         Ir a catalogo
       </Button>
 

@@ -7,6 +7,7 @@ export const ListImages = ({data})=> {
     <Grid container spacing={2} 
           sx={{ justifyContent:'space-around', alignItems:'center', display:'flex',}} >
         {data?.currentData().map(el=>(
+            
             <Grid item key={el.id} sm={6} xs={12} lg={4} sx={{ justifyContent:'space-around', alignItems:'center', display:'flex', }} >
                 <ProductCard 
                   imgCard={el.img} 
@@ -14,8 +15,10 @@ export const ListImages = ({data})=> {
                   prodPrice={el.precio} 
                   id={el.id} 
                   stock = {el.stock}
+                  activo={el.activo}
                 />
             </Grid >
+          
         ))}
     </Grid>
   )

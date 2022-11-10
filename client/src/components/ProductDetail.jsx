@@ -21,6 +21,7 @@ import NotFound404 from "../pages/NotFound404";
 import Producto404 from "../pages/Producto404";
 import {TYPES} from '../actions/ShoppingCartActions.js'
 import { AuthContext } from "../auth/AuthContext";
+import Label from "../dashboard/components/label";
 
 
 export const ProductDetail_comp = () => {
@@ -74,7 +75,7 @@ export const ProductDetail_comp = () => {
   
 
     
-  const { nombre, precio, img, stock, descripcion } = product;
+  const { nombre, precio, img, stock, descripcion, activo } = product;
 
   const hadleAddCart = e =>{
     e.preventDefault(); 
@@ -93,6 +94,19 @@ export const ProductDetail_comp = () => {
           sx={{ alignItems:'center', justifyContent:'space-between', mt:'70px', width:'70%',  }} >
       <Grid item xs={12} md={7} sx={{alignItems:'center', justifyContent:'center',}} >
         <Box sx={{display:'flex', alignItems:'center', justifyContent:'center'}} >
+        {!activo && <Label
+            variant="filled"
+            color={(activo !== true && 'error') || 'info'}
+            sx={{
+              zIndex: 9,
+              top: 16,
+              right: 16,
+              position: 'absolute',
+              textTransform: 'uppercase',
+            }}
+          >
+            inactivo
+          </Label>}
           {!isLoading? <CardMedia  
           component="img" 
           sx={{width:'auto', maxHeight:{xs:"300px", md:'400px', xl:"450px", margin:'0 auto'}}} 
@@ -155,8 +169,9 @@ export const ProductDetail_comp = () => {
             sx={{margin:"5px auto",width:'80%', mb:1}} 
             startIcon={<AddShoppingCartIcon />}
             onClick={hadleAddCart}
+            disabled={!activo}
             >
-              <Typography  sx={{fontSize:13.5}} >Agregar al carrito</Typography>
+              <Typography sx={{fontSize:13.5,}} >Agregar al carrito</Typography>
           </Button>
         </Box>
       </Grid>

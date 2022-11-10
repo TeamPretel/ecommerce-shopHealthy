@@ -33,7 +33,7 @@ export const ActionAlerts = ({categoria}) => {
                   <VerifiedOutlinedIcon sx={{margin:'0 10px 2px 0 '}}/>
                   { `${categAlert.subCateg.join(' -')} ` }
                 </Typography>
-              :<p>caiste aqui</p>
+              :<p>No existe el archivo seleccionado</p>
       }
         {/* <Typography 
           sx={{textAlign:'center', margin:"0", padding:"0", alignContent:"center"}} 

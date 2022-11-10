@@ -39,7 +39,8 @@ const TABLE_HEAD = [
   { id: 'role', label: 'Rol', alignRight: false },
   { id: 'promover', label: 'Promover', alignRight: false },
   { id: 'tokensValidAfterTime', label: 'Token expira', alignRight: false },
-  { id: '' },
+  { id: '',label: '', alignRight: false },
+  { id: '',label: '', alignRight: false },
 ];
 // ----------------------------------------------------------------------
 function descendingComparator(a, b, orderBy) {
@@ -95,7 +96,7 @@ export default function UserPage() {
           <UserPageContent myUsers={data} />
     </>)
   }
-  return ('💩')
+  return ('Cargando...')
 
 }
 function UserPageContent({myUsers}) {
@@ -122,7 +123,7 @@ function UserPageContent({myUsers}) {
   };
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = myusers.map((n) => n.name);
+      const newSelecteds = myUsers.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -231,7 +232,7 @@ function UserPageContent({myUsers}) {
     setPage(0);
     setFilterName(event.target.value);
   };
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - myusers.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - myUsers.length) : 0;
   const filteredUsers = applySortFilter(myUsers, getComparator(order, orderBy), filterName);
   const isNotFound = !filteredUsers.length && !!filterName;
 
@@ -243,15 +244,15 @@ function UserPageContent({myUsers}) {
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4" gutterBottom>
-          User
+          Usuarios
         </Typography>
-        <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+        {/* <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
           New User
-        </Button>
+        </Button> */}
       </Stack>
 
-        <Card sx={{border:'1px solid black', minmWidth:800, height:'auto' }} > 
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+        <Card sx={{ minmWidth:800, height:'auto', p:1 }} > 
+          {/* <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} /> */}
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800, }}>
               <Table>
@@ -259,14 +260,14 @@ function UserPageContent({myUsers}) {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={5}
+                  rowCount={6}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                 { 
-                  filteredUsers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                  filteredUsers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row,i) => {
                     const {
                       uid,
                       photoURL,
@@ -274,14 +275,14 @@ function UserPageContent({myUsers}) {
                       email,
                       created,
                       role,
-                      tokensValidAfterTime 
+                      tokensValidAfterTime,
                     } = row
                     // const { id, name, role, status, company, avatarUrl, isVerified } = row;
                     // (!metadata) && console.dir(metadata) 
                     const selectedUser = selected.indexOf(displayName) !== -1;
 
                     return (
-                      <TableRow hover key={uid} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={i} tabIndex={-1} role="checkbox" selected={selectedUser}>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={.5}>
@@ -317,18 +318,18 @@ function UserPageContent({myUsers}) {
                           </IconButton>
                         </TableCell>
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" >
+                          {/* <IconButton size="large" color="inherit" >
                             <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }}  />                            
-                          </IconButton>
+                          </IconButton> */}
                         </TableCell>
                       </TableRow>
                     );
                   })
                 }
                 {
-                  emptyRows > 0 && (
+                  emptyRows > 1 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={7} />
+                      <TableCell colSpan={400} />
                     </TableRow>
                   )
                 }
@@ -364,7 +365,7 @@ function UserPageContent({myUsers}) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={USERLIST.length}
+          count={myUsers.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

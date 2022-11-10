@@ -93,7 +93,7 @@ export const Login_comp =  () => {
     } else {
       setErrorPassword(true)
       setLeyendaPassword(
-      'Escribe una clave bien fuerte 💪😉, mas de  8 caracteres, 1 minuscula, 1 mayuscula, 1 número, 1 simbolo')      
+      'Escribe una clave bien fuerte 💪😉, mas de  8 caracteres, 1 minuscula, 1 mayuscula, 1 número, 1 simbolo(!,",#,$,%,&,/,*,¨,?)')      
     }
   }
  
