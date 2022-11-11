@@ -1,21 +1,44 @@
-import { CardMedia, Grid, Typography, Stack,Container, Button, Divider, Box, Skeleton, capitalize, Rating } from "@mui/material"
-import { useEffect, useState } from "react";
+import { CardMedia, Grid, Typography, Stack,Container, Button, Divider, Box, Skeleton, capitalize, Rating, Alert } from "@mui/material"
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { initProducts } from "../actions/getInitProducts";
-import ShopProductCard from "../dashboard/sections/@dashboard/products/ProductCard"
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import { Link as RouterLink } from "react-router-dom";
 import { DrawerReview } from "../components/DrawerReview";
 import { fCurrency } from "../dashboard/utils/formatNumber";
+import { getCompras } from "../helpers/getCompras";
+import { AuthContext } from "../auth/AuthContext";
 
 export const MisCompras = () => {
 
+    const { user,} = useContext(AuthContext);
+    const [compras, setCompras] = useState([]);
+    const [products, setProducts] = useState([]);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(initProducts())
       }, [dispatch]);
 
+    useEffect(() => {
+        const getNewCompras = async()=> {
+            const result = await getCompras(user.dni);
+            setCompras(result)
+        }
+        getNewCompras();
+        
+
+    }, [user]);
+
+    useEffect(() => {
+        let arr = compras.map(el=> {
+            return el.detalleventa.map(ele=> ({...ele, estado :el.estadoEnvio, fecha: el.fecha  }))
+        } )
+        arr = arr.flat()
+        setProducts(arr)
+    }, [compras])
+    
+    
     const [open, setOpen] = useState (false);
     const [id, setId] = useState('');
     const [value, setValue] = useState(4);
@@ -30,9 +53,6 @@ export const MisCompras = () => {
         setId(id)
     }
 
-    let {products} = useSelector(s=>s.catalogReducer)
-
-    products = products.slice(85)
 
   return (
     <Container sx={{pb:5}} >
@@ -42,18 +62,21 @@ export const MisCompras = () => {
             Mis Compras
             </Typography>
         </Box>
-        {products.map(el=>(
+        {
+        (products.length)
+        ?products.map((el, i)=>(
         
-        <div key={el.id}>
+        <div key={i}>
         <Grid container sx={{boxShadow:15, borderRadius:'8px', my:2, pb:3 }}>
 
             <Grid item xs={6}  >
-                <Typography variant="h5" sx={{ py:2, pl:3}} >Estado: <Typography variant="body1" display='inline' >entregado</Typography>  </Typography>
+                <Typography variant="h5" sx={{ py:2, pl:3}} >Estado: <Typography variant="body1" display='inline' >{el.estado}</Typography>  </Typography>
             </Grid>
 
             <Grid item xs={6}  >
-                <Typography variant="h5" sx={{ py:2}} >Fecha de envio: <Typography variant="body1" display='inline' >25/85/5</Typography></Typography>
+                <Typography variant="h5" sx={{ py:2}} >Fecha de compra: <Typography variant="body1" display='inline' > {el.fecha.slice(0,10)} </Typography></Typography>
             </Grid>
+
             <Grid item xs={12} >
                 <Divider variant="middle" color='black' sx={{mb:2}} />
 
@@ -63,7 +86,7 @@ export const MisCompras = () => {
                 <CardMedia
                 component="img"
                 height="194"
-                image={`https://res.cloudinary.com/dw8jw0zhx/image/upload/v1667676017/healthy_shop_default/${el.img}`||<Skeleton height={194}/>}
+                image={`https://res.cloudinary.com/dw8jw0zhx/image/upload/v1667676017/healthy_shop_default/${el.producto.img}`||<Skeleton height={194}/>}
                 alt={'nombre'}
                 sx={{width:'auto', height:'140px' }}
                 />
@@ -72,29 +95,34 @@ export const MisCompras = () => {
 
             <Grid item xs={12} md={6} sx={{m:'auto'}} >
                 <Stack spacing={1} sx={{display:'flex', alignItems:'center', justifyContent:'center'}} >
-                    <Typography sx={{px:1, fontWeight:700 }} >{ capitalize(el.nombre )}</Typography>
-                    <Typography variant="body1" sx={{px:1, opacity:'85%', m:'0 auto' }} >{ capitalize(el.marca.nombre)}</Typography>
-                    <Typography variant="body1" sx={{px:1, opacity:'85%' }} > { ` ${fCurrency(el.precio)} x ${2} ` } </Typography>
-                    <Rating 
+                    <Typography sx={{px:1, fontWeight:700 }} >{ capitalize(el.producto.nombre )}</Typography>
+                    <Typography variant="body1" sx={{px:1, opacity:'85%', m:'0 auto' }} >{ capitalize(el.producto.marca.nombre)}</Typography>
+                    <Typography variant="body1" sx={{px:1, opacity:'85%' }} > { ` ${fCurrency(el.producto.precio)} x ${el.cantidad} ` } </Typography>
+                    {/* <Rating 
                         sx={{m:'10px auto'}}
                         name="simple-controlled"
                         value={value}
                         readOnly                
-                    />
+                    /> */}
 
                 </Stack>
             </Grid>
 
             <Grid item xs={12} md={4} sx={{alignItems:'center'}} >
                 <Stack spacing={1} sx={{m:'auto 15px', alignContent:'center'}} >
-                    <Typography variant="body1" sx={{fontWeight:700}} >{`Total -> ${fCurrency(el.precio *2 )}`}</Typography>
-                    <Button onClick={()=>{setOptions(el.id)}} variant="contained" > Calificar </Button>
+                    <Typography variant="body1" sx={{fontWeight:700}} >{`Total -> ${fCurrency(el.producto.precio*el.cantidad)}`}</Typography>
+                    <Button onClick={()=>{setOptions(el.producto.id)}} variant="contained" > Calificar </Button>
                 </Stack>
             </Grid>
         </Grid>
-        <DrawerReview id={id} compareId={el.id} nombre={el.nombre} img={el.img} toggleDrawer={toggleDrawer} open={open} setOpen={setOpen} />
+        <DrawerReview id={id} compareId={el.producto.id} nombre={el.producto.nombre} img={el.producto.img} toggleDrawer={toggleDrawer} open={open} setOpen={setOpen} />
         </div>
-    ))}
+    ))
+    :<Alert severity="error" sx={{fontSize:25, mt:10}} >
+        Aun no tienes — <strong>Compras</strong>
+    </Alert>
+    
+    }
     </Container>
   )
 }

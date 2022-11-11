@@ -2,14 +2,15 @@ import * as React from 'react';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import { useForm, Controller } from 'react-hook-form';
 import { Alert } from '@mui/material';
+import { AuthContext } from '../auth/AuthContext';
 
 export const FormCarrito = ({errors, control, handleSubmit, onSubmit})=> {
+  const {dispatch, user} = React.useContext(AuthContext); 
 
   return (
+
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
         Datos de envio
@@ -18,7 +19,7 @@ export const FormCarrito = ({errors, control, handleSubmit, onSubmit})=> {
         <Grid item xs={12} sm={6}>
         <Controller 
             name="nombre"
-            defaultValue={''}
+            defaultValue={user.nombre || ''}
             control={control}
             rules={{ required: true, maxLength:50,pattern:/^([a-z,A-Z,\s])*$/ }}
             render={({ field }) => <TextField
@@ -39,7 +40,7 @@ export const FormCarrito = ({errors, control, handleSubmit, onSubmit})=> {
         <Grid item xs={12} sm={6}>
         <Controller 
             name="apellido"
-            defaultValue={''}
+            defaultValue={user.apellido || ''}
             control={control}
             rules={{ required: true, maxLength:30,pattern:/^([a-z,A-Z,\s])*$/ }}
             render={({ field }) => <TextField
@@ -59,7 +60,7 @@ export const FormCarrito = ({errors, control, handleSubmit, onSubmit})=> {
         <Grid item xs={12}>
         <Controller 
             name="direccion"
-            defaultValue={''}
+            defaultValue={user.direccion || ''}
             control={control}
             rules={{ required: true, }}
             render={({ field }) => <TextField
@@ -78,7 +79,7 @@ export const FormCarrito = ({errors, control, handleSubmit, onSubmit})=> {
         <Grid item xs={12}>
         <Controller 
             name="email"
-            defaultValue={''}
+            defaultValue={user.mail || ''}
             control={control}
             rules={{ required: true, pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  }}
             render={({ field }) => <TextField
@@ -119,7 +120,7 @@ export const FormCarrito = ({errors, control, handleSubmit, onSubmit})=> {
         <Grid item xs={12} sm={6}>
         <Controller 
             name="id"
-            defaultValue={''}
+            defaultValue={user.dni || ''}
             control={control}
             rules={{ required: true, maxLength:10, pattern:/^([0-9])*$/ }}
             render={({ field }) => <TextField
@@ -127,6 +128,7 @@ export const FormCarrito = ({errors, control, handleSubmit, onSubmit})=> {
                                         required
                                         label="DNI"
                                         fullWidth
+                                        disabled
                                         autoComplete="given-name"
                                         variant="standard"
                                     />}
@@ -140,7 +142,7 @@ export const FormCarrito = ({errors, control, handleSubmit, onSubmit})=> {
         <Grid item xs={12} sm={6}>
         <Controller 
             name="codPostal"
-            defaultValue={''}
+            defaultValue={user.codPostal || ''}
             control={control}
             rules={{ required: true, min:1001, max:9431, pattern:/^([0-9])*$/ }}
             render={({ field }) => <TextField

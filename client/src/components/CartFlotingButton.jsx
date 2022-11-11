@@ -99,7 +99,7 @@ export const CartFlotingButton = ()=> {
             { subtotal?`Subtotal: ${fCurrency(subtotal)}`:'' }
           </Typography>
           <Button sx={{width:'90%', my:1,}}  onClick={toggleDrawer(anchor, false)} variant='outlined' >{ cart.length? 'Seguir Comprando': 'Iniciar Compra ' }</Button>
-          {cart.length ? <Button sx={{width:'90%', mt:1, mb:2}} component={RouterLink} to='/usuario/nombre/comprar' variant='outlined' >Finalizar Compra</Button>:''}
+          {cart.length ? <Button sx={{width:'90%', mt:1, mb:2}} component={RouterLink} to='/comprar' variant='outlined' >Finalizar Compra</Button>:''}
         </Stack>
 
     </Box>

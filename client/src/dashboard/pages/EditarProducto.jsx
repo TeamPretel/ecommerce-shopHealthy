@@ -92,13 +92,15 @@ export default function EditarProducto() {
     
   const { nombre, precio, img, stock, activo, descripcion, marca, categoria } = product;
   const { handleSubmit, formState:{errors}, control, } = useForm();
-  const [check, setCheck] = useState(activo)
+  console.log(activo)
+  const [check, setCheck] = useState(!!!activo)
 
 
   const onSubmit = (data)=>{
     
-    let dataToPut = {...data}
+    let dataToPut = {...data, activo: check }
     if (image) dataToPut = {...data, imagen: image.slice(83), precio: parseInt(precio) }
+    console.log(dataToPut)
     dispatch(editarProducto(dataToPut, id))
     navigate('/admin/dashboard/products', {replace:true})
 
@@ -298,16 +300,13 @@ export default function EditarProducto() {
                     </FormControl>
                       
                       )}
-                />
-                    <Controller
-                        name="activo"
-                        control={control}
-                        defaultValue={!!activo}
-                        // checked={check}
-                        render={({ field }) =><Checkbox {...field} />}
-                        
+                /> <Stack direction='row' >
+                    <Typography sx={{mt:1}} >Activar</Typography>
+                    <Checkbox
+                      checked={check}
+                      onChange={(e)=>setCheck(e.target.checked)}
                     />
-
+                  </Stack> 
             </Stack>
                 <Stack direction='row' spacing={1} >
                     <Button type="submit" disabled={load} variant='contained' sx={{width:'50%'}} >

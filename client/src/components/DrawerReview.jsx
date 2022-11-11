@@ -12,6 +12,8 @@ import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios'
 import Swal from 'sweetalert2'
+import { AuthContext } from '../auth/AuthContext';
+import { useContext } from 'react';
 
 
 const drawerBleeding = 10;
@@ -38,11 +40,12 @@ const Puller = styled(Box)(({ theme }) => ({
 
 export const DrawerReview = ({toggleDrawer, open, setOpen, nombre, img, id, compareId}) => {
 
-const [value, setValue] = useState(0);
 const { handleSubmit, formState:{errors}, control, } = useForm();
+const {user}= useContext(AuthContext)
+const neewUsuario =  user.usuarios?.find(el=>el.uid == user.uid ) || 'user'
 
 const onSubmit = async (data)=>{
-  let newData = {...data, puntaje: parseInt(data.puntaje),  productoId:id, usuarioId:30700680}
+  let newData = {...data, puntaje: parseInt(data.puntaje),  productoId:id, usuarioId: parseInt(neewUsuario.id)}
   let json = await axios.post(`https://henryhealthy.shop/tresmiluno/review/crear`,newData);
   setOpen(false);
   Swal.fire({

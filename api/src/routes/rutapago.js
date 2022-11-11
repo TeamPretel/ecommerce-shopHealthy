@@ -45,21 +45,21 @@ router.post('/notificacion', async (req,res)=>{
   const {query}= req
   console.log('NOTIFICACION...')
   console.log({query})
-  const topic = query.topic || query.type
-  console.log('ACA ROMPE ANTES DE LA MERCHANT-.-')
+  const topic = query.topic || query.type;
+  
   // console.log('ESTE DEBAJO ES EL TOPICC')
   // console.log({topic})
 
   var merchantOrder;
   switch (topic) {
-    case "merchant_order":
-      const orderId= query.id;
-      console.log('OBTENIENDO EL MERCHAN ORDER..', orderId)
-      merchantOrder= await mercadopago.merchant_orders.findById(orderId)  
-      console.log('ACA VIENE LA DATA DEL MERCHANT ORDER.')
-      console.log(merchantOrder.body)
-      break
-      case 'payment':
+    // case "merchant_order":
+    //   const orderId= query.id;
+    //   console.log('OBTENIENDO EL MERCHAN ORDER..', orderId)
+    //   merchantOrder= await mercadopago.merchant_orders.findById(orderId)  
+    //   console.log('ACA VIENE LA DATA DEL MERCHANT ORDER.')
+    //   console.log(merchantOrder.body)
+    case 'payment':
+
         const paymentId= query.id || query['data.id']
         console.log('obteniendo  el ID de pago')
         console.log(paymentId)
@@ -68,9 +68,10 @@ router.post('/notificacion', async (req,res)=>{
         console.log('ESTE ES EL PAGO')
         console.log(pago)
         merchantOrder= await mercadopago.merchant_orders.findById(pago.body.order.id)
-        break
-
-      // if(merchantOrder.body.payments[0]?.status === 'approved'){
+        console.log(merchantOrder)
+        let idmp = merchantOrder.body.payments[0].id 
+        let vta = await Venta.findOne({ where: { id: idmp } })
+      if(merchantOrder.body.payments[0]?.status === 'approved' && !vta){
       // if(true){
 
       //   const venta = await Venta.create({

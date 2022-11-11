@@ -46,6 +46,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
     "simplebar-react": "^2.4.3",
+    "solid-simple-table": "^1.2.0",
     "styled-components": "^5.3.6",
     "sweetalert2": "^11.6.2",
     "uuid": "^9.0.0",

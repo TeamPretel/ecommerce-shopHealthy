@@ -1,8 +1,10 @@
 import { getAllProducts } from "../helpers/index";
+import { orderAsc, orderDesc } from "./order";
 
 export const initProducts = ()=>{
+    return async ( dispath, getState )=>{
+        const {order, orderKey}= getState().catalogReducer;
 
-    return async ( dispath)=>{
         dispath({type: 'FETCH_INIT_PRODUCTS'})
         let cart= []
         try {
@@ -19,6 +21,8 @@ export const initProducts = ()=>{
                 type: 'SUCCESS_FETCH_INIT_PRODUCTS',
                 payload: {data: allProducts, cat: 'All', cart:cart},
             })
+            if(order) dispath(orderAsc(orderKey));
+            else dispath(orderDesc(orderKey))
         } catch (error) {
             dispath({
                 type: 'ERROR_FETCH_INIT_PRODUCTS',
@@ -26,6 +30,5 @@ export const initProducts = ()=>{
             })
             console.error(error.message);
         }
-
     }
 }

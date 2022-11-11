@@ -8,19 +8,35 @@ import Container from '@mui/material/Container';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useForm, Controller } from 'react-hook-form';
 import Swal from 'sweetalert2'
-import { Alert } from '@mui/material';
+import { Alert, capitalize } from '@mui/material';
 import axios from 'axios';
+import { type } from "../../types";
+import { useDispatch } from 'react-redux';
+import { useContext } from 'react';
+import { AuthContext } from '../auth/AuthContext';
+
 
 export const Preferencias_comp = () => {
 
   const { handleSubmit, formState:{errors}, control, } = useForm();
   const navigate = useNavigate();
-
-
+  const { user, dispatch } = useContext(AuthContext);
   const onSubmit = async(d)=>{
     console.log(d)
-    const newData = {...d, codPostal:parseInt(d.codPostal), telefono:parseInt(d.telefono), isAdmin:false}
-    console.log(newData);
+    const newData = {...d, codPostal:parseInt(d.codPostal), telefono:parseInt(d.telefono), isAdmin:false, uid:user.uid}
+    const action = {
+      type: type.login,
+      payload: {
+        nombre: newData.nombre,
+        apellido: newData.apellido,
+        mail: newData.mail,
+        direccion: newData.direccion,
+        codPostal: newData.codPostal,
+        telefono: newData.telefono,
+        dni: newData.id
+      }
+    }
+    dispatch(action)
     
     try {
       const backMesage = await axios.post('https://henryhealthy.shop/tresmiluno/usuario/crear',newData );
@@ -48,7 +64,7 @@ export const Preferencias_comp = () => {
   return (
     <>
       <Container component="main" sx={{ marginTop: '100px', width:'60%', alignItems:'center' }}>
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main', m:'0 auto' }}>
+          <Avatar sx={{bgcolor: 'secondary.main', m:'0 auto' }}>
             <AccountCircleIcon fontSize="large" />
           </Avatar>
           <Typography component="h1" variant="h5" sx={{textAlign:'center'}} >
@@ -58,7 +74,7 @@ export const Preferencias_comp = () => {
         <Grid item xs={12} sm={6}>
         <Controller 
             name="nombre"
-            defaultValue={''}
+            defaultValue={capitalize(user?.nombre.split(' ')[0])}
             control={control}
             rules={{ required: true, maxLength:50,pattern:/^([a-z,A-Z,\s])*$/ }}
             render={({ field }) => <TextField
@@ -79,7 +95,7 @@ export const Preferencias_comp = () => {
         <Grid item xs={12} sm={6}>
         <Controller 
             name="apellido"
-            defaultValue={''}
+            defaultValue={user?.nombre.split(' ')[1]? capitalize(user?.nombre.split(' ')[1]):''}
             control={control}
             rules={{ required: true, maxLength:30,pattern:/^([a-z,A-Z,\s])*$/ }}
             render={({ field }) => <TextField
@@ -118,7 +134,7 @@ export const Preferencias_comp = () => {
         <Grid item xs={6}>
         <Controller 
             name="mail"
-            defaultValue={''}
+            defaultValue={user.mail}
             control={control}
             rules={{ required: true, pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/  }}
             render={({ field }) => <TextField

@@ -7,7 +7,9 @@ import { Box, Button, CardActionArea, CardActions } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import MercadoLogo from '../assets/mercadopago.png'
 
+
 export const MercadoPagoCart = ()=> {
+  
   return (
     <Box sx={{ maxWidth: 345, bgcolor:'transparent' }}>
       <Box>
