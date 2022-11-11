@@ -45,7 +45,8 @@ router.post('/notificacion', async (req,res)=>{
   const {query}= req
   console.log('NOTIFICACION...')
   console.log({query})
-  const topic = query.topic
+  const topic = query.topic || query.type
+  console.log('ACA ROMPE ANTES DE LA MERCHANT-.-')
   // console.log('ESTE DEBAJO ES EL TOPICC')
   // console.log({topic})
 
@@ -57,69 +58,80 @@ router.post('/notificacion', async (req,res)=>{
       merchantOrder= await mercadopago.merchant_orders.findById(orderId)  
       console.log('ACA VIENE LA DATA DEL MERCHANT ORDER.')
       console.log(merchantOrder.body)
+      break
+      case 'payment':
+        const paymentId= query.id || query['data.id']
+        console.log('obteniendo  el ID de pago')
+        console.log(paymentId)
+
+        const pago= await mercadopago.payment.findById(paymentId)
+        console.log('ESTE ES EL PAGO')
+        console.log(pago)
+        merchantOrder= await mercadopago.merchant_orders.findById(pago.body.order.id)
+        break
+
       // if(merchantOrder.body.payments[0]?.status === 'approved'){
-      if(true){
+      // if(true){
 
-        const venta = await Venta.create({
-          id: merchantOrder.body.payments[0].id,
-          fecha: merchantOrder.body.payments[0].date_approved,
-          precioTotal: merchantOrder.body.payments[0].transaction_amount,
-          estadioEnvio: 'en preparacion',
-          usuarioId: parseInt(merchantOrder.body.items[0].category_id)
-        })
+      //   const venta = await Venta.create({
+      //     id: merchantOrder.body.payments[0].id,
+      //     fecha: merchantOrder.body.payments[0].date_approved,
+      //     precioTotal: merchantOrder.body.payments[0].transaction_amount,
+      //     estadioEnvio: 'en preparacion',
+      //     usuarioId: parseInt(merchantOrder.body.items[0].category_id)
+      //   })
     
-          merchantOrder.body.items.forEach(item => {
-          Detalleventa.create({
-            cantidad: item.quantity,
-            precioUnitario: item.unit_price,
-            ventumId: merchantOrder.body.payments[0].id,
-            productoId: item.id
-          }) 
-        }) 
+      //     merchantOrder.body.items.forEach(item => {
+      //     Detalleventa.create({
+      //       cantidad: item.quantity,
+      //       precioUnitario: item.unit_price,
+      //       ventumId: merchantOrder.body.payments[0].id,
+      //       productoId: item.id
+      //     }) 
+      //   }) 
     
-         merchantOrder.body.items.forEach(async (item) => {
+      //    merchantOrder.body.items.forEach(async (item) => {
     
-          const producto = await Producto.findByPk(item.id);
-          producto.stock = producto.stock - item.quantity
-          producto.save()
+      //     const producto = await Producto.findByPk(item.id);
+      //     producto.stock = producto.stock - item.quantity
+      //     producto.save()
     
-        }) 
+      //   }) 
 
-        let usuario = await Usuario.findByPk(parseInt(merchantOrder.body.items[0].category_id))
+      //   let usuario = await Usuario.findByPk(parseInt(merchantOrder.body.items[0].category_id))
 
-        const transport = nodemailer.createTransport({
-          host: 'smtp-mail.outlook.com',
-          port: 587,   //con ssl o 25 sin ssl
-          secure: false,
-          auth: {
-              user:'healthyshophenry@outlook.com' ,
-              pass: 'proyectogripal7'
-          },
-          tls: {
-              rejectUnauthorized: false   //permite mandar mails desde otro lado q no sea el localhost
-          }
-      })
-          const info = await transport.sendMail({
-          from: '"Healthy Shop 🥗🍚" <healthyshophenry@outlook.com>', 
-          to: `${usuario.mail}`, 
-          subject: "Confirmación de Compra", 
+      //   const transport = nodemailer.createTransport({
+      //     host: 'smtp-mail.outlook.com',
+      //     port: 587,   //con ssl o 25 sin ssl
+      //     secure: false,
+      //     auth: {
+      //         user:'healthyshophenry@outlook.com' ,
+      //         pass: 'proyectogripal7'
+      //     },
+      //     tls: {
+      //         rejectUnauthorized: false   //permite mandar mails desde otro lado q no sea el localhost
+      //     }
+      // })
+      //     const info = await transport.sendMail({
+      //     from: '"Healthy Shop 🥗🍚" <healthyshophenry@outlook.com>', 
+      //     to: `${usuario.mail}`, 
+      //     subject: "Confirmación de Compra", 
           
-          html: (`<b><h1>Hola! Tu compra ha sido registrada con el número ${merchantOrder.body.payments[0].id}, 
-                  con fecha ${merchantOrder.body.payments[0].date_approved}.
-                  Gracias por confiar en nuestros productos.</h1></b>`), 
-        })
+      //     html: (`<b><h1>Hola! Tu compra ha sido registrada con el número ${merchantOrder.body.payments[0].id}, 
+      //             con fecha ${merchantOrder.body.payments[0].date_approved}.
+      //             Gracias por confiar en nuestros productos.</h1></b>`), 
+      //   })
         
         
      
         
        
-      }
+      // }
       // else{
       //   res.send("La venta no se pudo registrar")
       // }
 
       res.send("La venta se registró correctamente")
-      break; 
   }
 })
 

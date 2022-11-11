@@ -61,7 +61,7 @@ const {nombre, apellido, email, telefono, mensaje}=req.body;
        Mensaje: ${mensaje}</p>`)
     })
 
-    console.log('Message sent', info.messageId)
+    // console.log('Message sent', info.messageId)
 
     res.send('Mensaje Registrado!')
 })
