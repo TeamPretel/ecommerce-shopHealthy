@@ -1,20 +1,12 @@
-const { Sequelize } = require('sequelize');
-const server = require('./src/app.js');
+require('dotenv').config()
+// const { Sequelize } = require('sequelize')
+const server = require('./src/app.js')
+const PORT = process.env.PORT
 
-
-
-const { conn } = require('./src/db');
-
-// Syncing all the models at once.
-// conn.drop() 
+const { conn } = require('./src/db')
 
 conn.sync({ force: false }).then(() => {
-
-  server.listen(3001, () => {
-    console.log('El back está listeneando en 3001'); 
-
-  });
-});
-
-
-
+  server.listen(PORT, () => {
+    console.log(`Backend HealthyShop escuchando en ${PORT}`)
+  })
+})
