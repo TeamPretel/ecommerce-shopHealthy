@@ -2,7 +2,10 @@ import {marcas} from './marcasPrueba'
 
 export const getAllProducts = async()=>{
 
-    const allProducts = await (await fetch('https://henryhealthy.shop/tresmiluno/producto')).json();
+    const allProducts = await (await fetch('https://healthyback.onrender.com/tresmiluno/producto', {
+        mode: 'no-cors',
+        credentials: 'include'
+    })).json();
 
     const productsMarcas = allProducts.map( el => {return {...el, marcaId: marcas.find(ele=>el.marcaId == ele.id)}});
     // const allProducts = await (await fetch('http://31.220.49.30:3001/productos')).json();

@@ -64,7 +64,7 @@ export const EditarUsuario = () => {
     console.log(d)
     const newData = {...d,id: parseInt(d.id), codPostal:parseInt(d.codPostal), telefono:parseInt(d.telefono), isAdmin:false, img:image.slice(81) }
     setLoad(true)
-    const resBack = await axios.put(`https://henryhealthy.shop/tresmiluno/usuario/modificar/${newData.id}`, newData)
+    const resBack = await axios.put(`https://healthyback.onrender.com/tresmiluno/usuario/modificar/${newData.id}`, newData)
     console.log(resBack)
     const action = {
       type: type.login,

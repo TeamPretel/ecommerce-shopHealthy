@@ -94,7 +94,7 @@ export const Register_comp = () => {
           }
           dispatch(action)
           // localStorage.setItem('user',JSON.stringify(user))
-          const backMesage = await axios.post('https://henryhealthy.shop/tresmiluno/usuario/crear',newData );
+          const backMesage = await axios.post('https://healthyback.onrender.com/tresmiluno/usuario/crear',newData );
           console.log(backMesage)
           Swal.fire({
             position: 'center',

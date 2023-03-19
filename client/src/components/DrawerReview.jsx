@@ -46,7 +46,7 @@ const neewUsuario =  user.usuarios?.find(el=>el.uid == user.uid ) || 'user'
 
 const onSubmit = async (data)=>{
   let newData = {...data, puntaje: parseInt(data.puntaje),  productoId:id, usuarioId: parseInt(neewUsuario.id)}
-  let json = await axios.post(`https://henryhealthy.shop/tresmiluno/review/crear`,newData);
+  let json = await axios.post(`https://healthyback.onrender.com/tresmiluno/review/crear`,newData);
   setOpen(false);
   Swal.fire({
     position: 'center',

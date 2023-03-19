@@ -23,7 +23,7 @@ const {items, payer} = req.body
             "number": payer.identification.number
           },
         },
-        "notification_url": "https://henryhealthy.shop/tresmiluno/compra/notificacion"
+        "notification_url": "https://healthyback.onrender.com/tresmiluno/compra/notificacion"
         // "https://9cee-2803-c080-d-f15c-8c4e-9ef5-f0e3-4ba0.sa.ngrok.io/tresmiluno/compra/notificacion",
       }
       console.log('aca viene la preferencia......')
@@ -165,7 +165,7 @@ router.post('/carga', async (req,res)=>{
     payouts: [],
     collector: { id: 1227569427, email: '', nickname: 'TETE7559172' },
     marketplace: 'NONE',
-    notification_url: 'https://henryhealthy.shop/tresmiluno/compra/notificacion',
+    notification_url: 'https://healthyback.onrender.com/tresmiluno/compra/notificacion',
     date_created: '2022-11-01T23:34:22.292-04:00',
     last_updated: '2022-11-01T23:35:36.092-04:00',
     sponsor_id: null,
